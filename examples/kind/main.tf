@@ -543,6 +543,7 @@ module "airflow" {
   argocd_project         = local.cluster_name
   app_autosync           = local.app_autosync
   enable_service_monitor = local.enable_service_monitor
+  target_revision        = "develop"
   oidc                   = module.oidc.oidc
   fernetKey              = base64encode(resource.random_password.airflow_fernetKey.result)
   storage = {
