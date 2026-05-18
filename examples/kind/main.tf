@@ -411,6 +411,14 @@ module "thanos" {
     oidc = module.oidc.oidc
   }
 
+  allowed_groups = [
+    "modern-gitops-stack-admins",
+    "modern-gitops-stack-editors",
+    "modern-gitops-stack-data-engineers",
+    "modern-gitops-stack-ml-engineers",
+    "modern-gitops-stack-data-scientists",
+  ]
+
   dependency_ids = {
     argocd       = module.argocd_bootstrap.id
     istio        = module.istio.id
@@ -450,6 +458,15 @@ module "kube-prometheus-stack" {
   grafana = {
     oidc = module.oidc.oidc
   }
+
+  allowed_groups = [
+    "modern-gitops-stack-admins",
+    "modern-gitops-stack-viewers",
+    "modern-gitops-stack-editors",
+    "modern-gitops-stack-data-engineers",
+    "modern-gitops-stack-ml-engineers",
+    "modern-gitops-stack-data-scientists",
+  ]
 
   dependency_ids = {
     istio        = module.istio.id
@@ -517,43 +534,37 @@ module "kube-prometheus-stack" {
 # #   }
 # # }
 
-# # module "airflow" {
-# #   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-airflow.git?ref=v1.6.2"
-# #   cluster_name           = local.cluster_name
-# #   base_domain            = local.base_domain
-# #   subdomain              = local.subdomain
-# #   cluster_issuer         = local.cluster_issuer
-# #   argocd_project         = local.cluster_name
-# #   app_autosync           = local.app_autosync
-# #   enable_service_monitor = local.enable_service_monitor
-# #   oidc                   = module.oidc.oidc
-# #   fernetKey              = base64encode(resource.random_password.airflow_fernetKey.result)
-# #   storage = {
-# #     bucket_name       = "airflow"
-# #     endpoint          = module.minio.endpoint
-# #     access_key        = module.minio.minio_root_user_credentials.username
-# #     secret_access_key = module.minio.minio_root_user_credentials.password
-# #   }
-# #   database = {
-# #     database = "airflow"
-# #     user     = module.postgresql.credentials.user
-# #     password = module.postgresql.credentials.password
-# #     endpoint = module.postgresql.cluster_dns
-# #   }
-# #   # mlflow = {
-# #   #   endpoint = module.mlflow.cluster_dns
-# #   # }
-# #   # ray = {
-# #   #   endpoint = module.ray.cluster_dns
-# #   # }
-# #   dependency_ids = {
-# #     argocd     = module.argocd_bootstrap.id
-# #     traefik    = module.traefik.id
-# #     oidc       = module.oidc.id
-# #     minio      = module.minio.id
-# #     postgresql = module.postgresql.id
-# #   }
-# # }
+module "airflow" {
+  source                 = "../../../modern-gitops-stack-module-airflow"
+  cluster_name           = local.cluster_name
+  base_domain            = local.base_domain
+  subdomain              = local.subdomain
+  cluster_issuer         = local.cluster_issuer
+  argocd_project         = local.cluster_name
+  app_autosync           = local.app_autosync
+  enable_service_monitor = local.enable_service_monitor
+  oidc                   = module.oidc.oidc
+  fernetKey              = base64encode(resource.random_password.airflow_fernetKey.result)
+  storage = {
+    bucket_name       = local.minio_config.buckets.3.name
+    endpoint          = module.minio.endpoint
+    access_key        = local.minio_config.users.3.accessKey
+    secret_access_key = local.minio_config.users.3.secretKey
+  }
+  database = {
+    database = "airflow"
+    user     = module.postgresql.credentials.username
+    password = module.postgresql.credentials.password
+    endpoint = module.postgresql.cluster_dns
+  }
+  dependency_ids = {
+    argocd     = module.argocd_bootstrap.id
+    istio      = module.istio.id
+    oidc       = module.oidc.id
+    minio      = module.minio.id
+    postgresql = module.postgresql.id
+  }
+}
 
 # module "jupyterhub" {
 #   source          = "git::https://github.com/GersonRS/modern-gitops-stack-module-jupyterhub.git?ref=develop"
@@ -611,37 +622,38 @@ module "kube-prometheus-stack" {
 # #   }
 # # }
 
-# module "argocd" {
-#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git?ref=v4.1.0"
-#
-#   base_domain              = local.base_domain
-#   cluster_name             = local.cluster_name
-#   subdomain                = local.subdomain
-#   cluster_issuer           = local.cluster_issuer
-#   server_secretkey         = module.argocd_bootstrap.argocd_server_secretkey
-#   accounts_pipeline_tokens = module.argocd_bootstrap.argocd_accounts_pipeline_tokens
-#   argocd_project           = local.cluster_name
-#   app_autosync             = local.app_autosync
-#
-#   admin_enabled = false
-#   exec_enabled  = true
-#
-#   oidc = {
-#     name         = "OIDC"
-#     issuer       = module.oidc.oidc.issuer_url
-#     clientID     = module.oidc.oidc.client_id
-#     clientSecret = module.oidc.oidc.client_secret
-#     requestedIDTokenClaims = {
-#       groups = {
-#         essential = true
-#       }
-#     }
-#   }
-#
-#   dependency_ids = {
-#     istio                 = module.istio.id
-#     cert-manager          = module.cert-manager.id
-#     oidc                  = module.oidc.id
-#     kube-prometheus-stack = module.kube-prometheus-stack.id
-#   }
-# }
+module "argocd" {
+  source = "../../../modern-gitops-stack-module-argocd"
+
+  base_domain              = local.base_domain
+  cluster_name             = local.cluster_name
+  subdomain                = local.subdomain
+  cluster_issuer           = local.cluster_issuer
+  target_revision          = "feature/argocd-httproute"
+  server_secretkey         = module.argocd_bootstrap.argocd_server_secretkey
+  accounts_pipeline_tokens = module.argocd_bootstrap.argocd_accounts_pipeline_tokens
+  argocd_project           = local.cluster_name
+  app_autosync             = local.app_autosync
+
+  admin_enabled = false
+  exec_enabled  = true
+
+  oidc = {
+    name         = "OIDC"
+    issuer       = module.oidc.oidc.issuer_url
+    clientID     = module.oidc.oidc.client_id
+    clientSecret = module.oidc.oidc.client_secret
+    requestedIDTokenClaims = {
+      groups = {
+        essential = true
+      }
+    }
+  }
+
+  dependency_ids = {
+    istio                 = module.istio.id
+    cert-manager          = module.cert-manager.id
+    oidc                  = module.oidc.id
+    kube-prometheus-stack = module.kube-prometheus-stack.id
+  }
+}
