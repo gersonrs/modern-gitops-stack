@@ -27,7 +27,7 @@ module "argocd_bootstrap" {
   repositories = [
     "git@github.com:GersonRS/modern-gitops-stack-module-argocd.git",
     "git@github.com:GersonRS/modern-gitops-stack-module-metrics-server.git",
-    "git@github.com:GersonRS/modern-gitops-stack-module-traefik.git",
+    "git@github.com:GersonRS/modern-gitops-stack-module-istio.git",
     "git@github.com:GersonRS/modern-gitops-stack-module-cert-manager.git",
     "git@github.com:GersonRS/modern-gitops-stack-module-keycloak.git",
     "git@github.com:GersonRS/modern-gitops-stack-module-postgresql.git",
@@ -68,9 +68,12 @@ module "metrics-server" {
   }
 }
 
-module "traefik" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-traefik.git//kind?ref=v2.9.0"
+module "istio" {
+  source = "../../../modern-gitops-stack-module-istio//kind"
 
+  cluster_name   = local.cluster_name
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
   argocd_project = local.cluster_name
 
   app_autosync           = local.app_autosync
@@ -110,7 +113,7 @@ module "postgresql" {
 }
 
 module "keycloak" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git?ref=develop"
+  source = "../../../modern-gitops-stack-module-keycloak"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -128,14 +131,14 @@ module "keycloak" {
   }
 
   dependency_ids = {
-    traefik      = module.traefik.id
+    istio        = module.istio.id
     cert-manager = module.cert-manager.id
     postgresql   = module.postgresql.id
   }
 }
 
 module "oidc" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git//oidc_bootstrap?ref=develop"
+  source = "../../../modern-gitops-stack-module-keycloak//oidc_bootstrap"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -150,7 +153,7 @@ module "oidc" {
 
 
 module "minio" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-minio.git?ref=v2.8.0"
+  source = "../../../modern-gitops-stack-module-minio"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -162,16 +165,20 @@ module "minio" {
   config_minio           = local.minio_config
   oidc                   = module.oidc.oidc
 
+  target_revision = "develop"
 
   dependency_ids = {
-    traefik      = module.traefik.id
+    istio        = module.istio.id
     cert-manager = module.cert-manager.id
     oidc         = module.oidc.id
   }
 }
 
+# --- Everything below is commented out for Phase 1 (Istio migration up to MinIO) ---
+
 module "mlflow" {
-  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-mlflow.git?ref=v1.3.0"
+  source = "../../../modern-gitops-stack-module-mlflow"
+
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
   subdomain              = local.subdomain
@@ -180,6 +187,14 @@ module "mlflow" {
   app_autosync           = local.app_autosync
   enable_service_monitor = local.enable_service_monitor
 
+  target_revision = "develop"
+
+  oidc = module.oidc.oidc
+  allowed_groups = [
+    "modern-gitops-stack-admins",
+    "modern-gitops-stack-data-scientists",
+    "modern-gitops-stack-ml-engineers",
+  ]
 
   storage = {
     bucket_name       = "mlflow"
@@ -195,9 +210,10 @@ module "mlflow" {
   }
   dependency_ids = {
     argocd     = module.argocd_bootstrap.id
-    traefik    = module.traefik.id
+    istio      = module.istio.id
     minio      = module.minio.id
     postgresql = module.postgresql.id
+    oidc       = module.oidc.id
   }
 }
 
@@ -348,13 +364,14 @@ module "mlflow" {
 # # # }
 
 module "loki-stack" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-loki-stack.git//kind?ref=v2.7.0"
+  source = "../../../modern-gitops-stack-module-loki-stack//kind"
 
   argocd_project = local.cluster_name
 
   app_autosync           = local.app_autosync
   enable_service_monitor = local.enable_service_monitor
 
+  target_revision = "develop"
 
   logs_storage = {
     bucket_name = local.minio_config.buckets.0.name
@@ -364,12 +381,13 @@ module "loki-stack" {
   }
 
   dependency_ids = {
+    istio = module.istio.id
     minio = module.minio.id
   }
 }
 
 module "thanos" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-thanos.git//kind?ref=v2.7.0"
+  source = "../../../modern-gitops-stack-module-thanos//kind"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -380,6 +398,7 @@ module "thanos" {
   app_autosync           = local.app_autosync
   enable_service_monitor = local.enable_service_monitor
 
+  target_revision = "develop"
 
   metrics_storage = {
     bucket_name = local.minio_config.buckets.1.name
@@ -394,7 +413,7 @@ module "thanos" {
 
   dependency_ids = {
     argocd       = module.argocd_bootstrap.id
-    traefik      = module.traefik.id
+    istio        = module.istio.id
     cert-manager = module.cert-manager.id
     minio        = module.minio.id
     keycloak     = module.keycloak.id
@@ -403,7 +422,7 @@ module "thanos" {
 }
 
 module "kube-prometheus-stack" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//kind?ref=v2.7.0"
+  source = "../../../modern-gitops-stack-module-kube-prometheus-stack//kind"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -413,6 +432,7 @@ module "kube-prometheus-stack" {
 
   app_autosync = local.app_autosync
 
+  target_revision = "develop"
 
   metrics_storage = {
     bucket_name = local.minio_config.buckets.1.name
@@ -432,7 +452,7 @@ module "kube-prometheus-stack" {
   }
 
   dependency_ids = {
-    traefik      = module.traefik.id
+    istio        = module.istio.id
     cert-manager = module.cert-manager.id
     minio        = module.minio.id
     oidc         = module.oidc.id
@@ -591,37 +611,37 @@ module "kube-prometheus-stack" {
 # #   }
 # # }
 
-module "argocd" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git?ref=v4.1.0"
-
-  base_domain              = local.base_domain
-  cluster_name             = local.cluster_name
-  subdomain                = local.subdomain
-  cluster_issuer           = local.cluster_issuer
-  server_secretkey         = module.argocd_bootstrap.argocd_server_secretkey
-  accounts_pipeline_tokens = module.argocd_bootstrap.argocd_accounts_pipeline_tokens
-  argocd_project           = local.cluster_name
-  app_autosync             = local.app_autosync
-
-  admin_enabled = false
-  exec_enabled  = true
-
-  oidc = {
-    name         = "OIDC"
-    issuer       = module.oidc.oidc.issuer_url
-    clientID     = module.oidc.oidc.client_id
-    clientSecret = module.oidc.oidc.client_secret
-    requestedIDTokenClaims = {
-      groups = {
-        essential = true
-      }
-    }
-  }
-
-  dependency_ids = {
-    traefik               = module.traefik.id
-    cert-manager          = module.cert-manager.id
-    oidc                  = module.oidc.id
-    kube-prometheus-stack = module.kube-prometheus-stack.id
-  }
-}
+# module "argocd" {
+#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git?ref=v4.1.0"
+#
+#   base_domain              = local.base_domain
+#   cluster_name             = local.cluster_name
+#   subdomain                = local.subdomain
+#   cluster_issuer           = local.cluster_issuer
+#   server_secretkey         = module.argocd_bootstrap.argocd_server_secretkey
+#   accounts_pipeline_tokens = module.argocd_bootstrap.argocd_accounts_pipeline_tokens
+#   argocd_project           = local.cluster_name
+#   app_autosync             = local.app_autosync
+#
+#   admin_enabled = false
+#   exec_enabled  = true
+#
+#   oidc = {
+#     name         = "OIDC"
+#     issuer       = module.oidc.oidc.issuer_url
+#     clientID     = module.oidc.oidc.client_id
+#     clientSecret = module.oidc.oidc.client_secret
+#     requestedIDTokenClaims = {
+#       groups = {
+#         essential = true
+#       }
+#     }
+#   }
+#
+#   dependency_ids = {
+#     istio                 = module.istio.id
+#     cert-manager          = module.cert-manager.id
+#     oidc                  = module.oidc.id
+#     kube-prometheus-stack = module.kube-prometheus-stack.id
+#   }
+# }
