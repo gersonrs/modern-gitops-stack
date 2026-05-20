@@ -5,7 +5,7 @@ resource "random_password" "airflow_fernetKey" {
 locals {
   kubernetes_version     = "v1.35.0"
   cluster_name           = "kind"
-  base_domain            = format("%s.nip.io", replace(module.traefik.external_ip, ".", "-"))
+  base_domain            = format("%s.nip.io", replace(module.istio.external_ip, ".", "-"))
   subdomain              = "apps"
   cluster_issuer         = module.cert-manager.cluster_issuers.ca
   enable_service_monitor = false # Can be enabled after the first bootstrap.
