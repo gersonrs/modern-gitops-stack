@@ -250,13 +250,13 @@ module "kafka" {
 }
 
 module "cp-schema-registry" {
-  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-cp-schema-registry.git?ref=v1.5.0"
+  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-cp-schema-registry.git?ref=v1.5.1"
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
   subdomain              = local.subdomain
   cluster_issuer         = local.cluster_issuer
   argocd_project         = local.cluster_name
-  target_revision        = "v1.5.0"
+  target_revision        = "v1.5.1"
   app_autosync           = local.app_autosync
   enable_service_monitor = local.enable_service_monitor
   kafka_broker_name      = module.kafka.broker_name
@@ -274,13 +274,13 @@ module "cp-schema-registry" {
 }
 
 module "kafka-ui" {
-  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-kafka-ui.git?ref=v1.5.0"
+  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-kafka-ui.git?ref=v1.5.1"
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
   subdomain              = local.subdomain
   cluster_issuer         = local.cluster_issuer
   argocd_project         = local.cluster_name
-  target_revision        = "v1.5.0"
+  target_revision        = "v1.5.1"
   app_autosync           = local.app_autosync
   enable_service_monitor = local.enable_service_monitor
   kafka_broker_name      = module.kafka.broker_name
