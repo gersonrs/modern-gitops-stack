@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.24.0](https://github.com/gersonrs/modern-gitops-stack/compare/v1.23.0...v1.24.0) (2026-07-18)
+
+
+### 🚀 New Features
+
+* update workflows ([2e7ea19](https://github.com/gersonrs/modern-gitops-stack/commit/2e7ea190c13d807ecad7ffb6de3eb25221c261a6))
+* update workflows ([5230b71](https://github.com/gersonrs/modern-gitops-stack/commit/5230b71d2ee11093243efe41bde2b6e1c7b68611))
+
+
+### 🔥 Bug Fixes
+
+* pin kafka-ui and schema-registry modules to v1.5.1 ([588ede0](https://github.com/gersonrs/modern-gitops-stack/commit/588ede0fb16cc63d87cb1215cba66f08d6323f60))
+* pin kafka-ui and schema-registry to v1.5.1 ([d9563f6](https://github.com/gersonrs/modern-gitops-stack/commit/d9563f6987cde3f30e70b0823af4bd3f101d3e1b))
+
 ## [1.23.0](https://github.com/gersonrs/modern-gitops-stack/compare/v1.22.1...v1.23.0) (2026-02-15)
 
 
