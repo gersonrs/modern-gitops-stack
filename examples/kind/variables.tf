@@ -10,3 +10,15 @@ variable "ssh_private_key" {
   sensitive   = true
   nullable    = false
 }
+
+variable "corporate_sso_client_secret" {
+  description = <<-EOT
+    Client secret do client registrado no Keycloak corporativo (SSO da Magalu)
+    usado para Identity Brokering. Defina via terraform.tfvars (git-ignorado)
+    ou variável de ambiente TF_VAR_corporate_sso_client_secret. Nunca comite em
+    texto claro no repositório.
+  EOT
+  type        = string
+  sensitive   = true
+  default     = "7IfEV2od8LxYmMKqrXUicCcwlZEJHVab"
+}
