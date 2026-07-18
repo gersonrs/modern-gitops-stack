@@ -33,13 +33,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Add PR or issue to Modern GitOps Stack project board
-        uses: actions/add-to-project@v1.0.2
+        uses: actions/add-to-project@v2.0.0
         with:
           project-url: https://github.com/users/GersonRS/projects/2
           github-token: ${{ secrets.PAT }}
           labeled: bug, needs-triage
           label-operator: NOT
       - name: Auto Author Assign
-        uses: toshimaru/auto-author-assign@v2.1.1
+        uses: toshimaru/auto-author-assign@v3.0.3
         with:
           repo-token: ${{ secrets.PAT }}
