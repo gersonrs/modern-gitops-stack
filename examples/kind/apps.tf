@@ -310,7 +310,7 @@
 # }
 
 module "airflow" {
-  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-airflow.git?ref=v1.8.1"
+  source                 = "../../../modern-gitops-stack-module-airflow"
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
   subdomain              = local.subdomain
@@ -319,6 +319,7 @@ module "airflow" {
   app_autosync           = local.app_autosync
   enable_service_monitor = local.enable_service_monitor
   oidc                   = module.oidc.oidc
+  target_revision        = "develop"
   fernetKey              = base64encode(resource.random_password.airflow_fernetKey.result)
   storage = {
     bucket_name       = local.minio_config.buckets.3.name
@@ -333,7 +334,7 @@ module "airflow" {
     endpoint = module.postgresql.cluster_dns
   }
   dependency_ids = {
-    argocd     = module.argocd_bootstrap.id
+    argocd     = module.argocd.id
     istio      = module.istio.id
     oidc       = module.oidc.id
     minio      = module.minio.id
