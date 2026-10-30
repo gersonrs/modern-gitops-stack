@@ -84,7 +84,7 @@ module "cert-manager" {
 }
 
 module "istio" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-istio.git//kind?ref=v1.10.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-istio.git//kind?ref=develop"
 
   cluster_name           = local.cluster_name
   subdomain              = local.subdomain
