@@ -50,6 +50,7 @@ module "argocd_bootstrap" {
     "git@github.com:GersonRS/modern-gitops-stack-module-airflow.git",
     "git@github.com:GersonRS/modern-gitops-stack-module-jupyterhub.git",
     "git@github.com:GersonRS/modern-gitops-stack-module-qdrant.git",
+    "git@github.com:GersonRS/modern-gitops-stack-module-ray.git",
   ]
 
   depends_on = [module.kind]
