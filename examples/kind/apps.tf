@@ -254,42 +254,67 @@
 #   }
 # }
 
-# module "jupyterhub" {
-#   source          = "git::https://github.com/GersonRS/modern-gitops-stack-module-jupyterhub.git?ref=v1.3.0"
-#   cluster_name    = local.cluster_name
-#   base_domain     = local.base_domain
-#   subdomain       = local.subdomain
-#   cluster_issuer  = local.cluster_issuer
-#   argocd_project  = local.cluster_name
-#   app_autosync    = local.app_autosync
-#   oidc            = module.oidc.oidc
-#   storage = {
-#     bucket_name       = "mlflow"
-#     endpoint          = module.minio.endpoint
-#     access_key        = module.minio.minio_root_user_credentials.username
-#     secret_access_key = module.minio.minio_root_user_credentials.password
-#   }
-#   database = {
-#     database = "jupyterhub"
-#     user     = module.postgresql.credentials.username
-#     password = module.postgresql.credentials.password
-#     endpoint = module.postgresql.cluster_dns
-#   }
-#   mlflow = {
-#     endpoint = module.mlflow.cluster_dns
-#   }
-#   # ray = {
-#   #   endpoint = module.ray.cluster_dns
-#   # }
+# module "kuberay" {
+#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-ray.git?ref=v1.5.0"
+
+#   cluster_name           = local.cluster_name
+#   base_domain            = local.base_domain
+#   subdomain              = local.subdomain
+#   cluster_issuer         = local.cluster_issuer
+#   argocd_project         = local.cluster_name
+#   app_autosync           = local.app_autosync
+#   enable_service_monitor = local.enable_service_monitor
+
 #   dependency_ids = {
-#     argocd     = module.argocd_bootstrap.id
-#     traefik    = module.traefik.id
-#     oidc       = module.oidc.id
-#     minio      = module.minio.id
-#     postgresql = module.postgresql.id
-#     mlflow     = module.mlflow.id
+#     argocd       = module.argocd.id
+#     istio        = module.istio.id
+#     cert-manager = module.cert-manager.id
 #   }
 # }
+
+module "jupyterhub" {
+  source         = "../../../modern-gitops-stack-module-jupyterhub"
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
+  oidc           = module.oidc.oidc
+  # The module sources the chart from GitHub at var.target_revision (default
+  # v1.7.0, which pins chart 4.3.2), not from this working tree. locals.tf stays
+  # inside what that chart's values schema accepts.
+  storage = {
+    bucket_name = "mlflow"
+    endpoint    = module.minio.endpoint
+    # Index 4 of the users list in s3_buckets.tf: jupyterhub-user, which is
+    # bound to jupyterhub-policy (read/write on the mlflow bucket only). The
+    # module's minio_root_user_credentials output is the MinIO root account —
+    # full access to every bucket — and must not be handed to a notebook pod.
+    access_key        = local.minio_config.users.4.accessKey
+    secret_access_key = local.minio_config.users.4.secretKey
+  }
+  database = {
+    database = "jupyterhub"
+    user     = module.postgresql.credentials.username
+    password = module.postgresql.credentials.password
+    endpoint = module.postgresql.cluster_dns
+  }
+  # mlflow = {
+  #   endpoint = module.mlflow.cluster_dns
+  # }
+  # ray = {
+  #   endpoint = module.ray.cluster_dns
+  # }
+  dependency_ids = {
+    argocd     = module.argocd.id
+    istio      = module.istio.id
+    oidc       = module.oidc.id
+    minio      = module.minio.id
+    postgresql = module.postgresql.id
+    # mlflow     = module.mlflow.id
+  }
+}
 
 # module "qdrant" {
 #   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-qdrant.git?ref=v1.2.0"
@@ -309,34 +334,34 @@
 #   }
 # }
 
-module "airflow" {
-  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-airflow.git?ref=v1.8.1"
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  oidc                   = module.oidc.oidc
-  fernetKey              = base64encode(resource.random_password.airflow_fernetKey.result)
-  storage = {
-    bucket_name       = local.minio_config.buckets.3.name
-    endpoint          = module.minio.endpoint
-    access_key        = local.minio_config.users.3.accessKey
-    secret_access_key = local.minio_config.users.3.secretKey
-  }
-  database = {
-    database = "airflow"
-    user     = module.postgresql.credentials.username
-    password = module.postgresql.credentials.password
-    endpoint = module.postgresql.cluster_dns
-  }
-  dependency_ids = {
-    argocd     = module.argocd_bootstrap.id
-    istio      = module.istio.id
-    oidc       = module.oidc.id
-    minio      = module.minio.id
-    postgresql = module.postgresql.id
-  }
-}
+# module "airflow" {
+#   source                 = "../../../modern-gitops-stack-module-airflow"
+#   cluster_name           = local.cluster_name
+#   base_domain            = local.base_domain
+#   subdomain              = local.subdomain
+#   cluster_issuer         = local.cluster_issuer
+#   argocd_project         = local.cluster_name
+#   app_autosync           = local.app_autosync
+#   enable_service_monitor = local.enable_service_monitor
+#   oidc                   = module.oidc.oidc
+#   fernetKey              = base64encode(resource.random_password.airflow_fernetKey.result)
+#   storage = {
+#     bucket_name       = local.minio_config.buckets.3.name
+#     endpoint          = module.minio.endpoint
+#     access_key        = local.minio_config.users.3.accessKey
+#     secret_access_key = local.minio_config.users.3.secretKey
+#   }
+#   database = {
+#     database = "airflow"
+#     user     = module.postgresql.credentials.username
+#     password = module.postgresql.credentials.password
+#     endpoint = module.postgresql.cluster_dns
+#   }
+#   dependency_ids = {
+#     argocd     = module.argocd.id
+#     istio      = module.istio.id
+#     oidc       = module.oidc.id
+#     minio      = module.minio.id
+#     postgresql = module.postgresql.id
+#   }
+# }

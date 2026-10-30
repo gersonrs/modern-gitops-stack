@@ -144,9 +144,9 @@ locals {
         policy    = "airflow-policy"
       },
       {
-        accessKey = "jupterhub-user"
+        accessKey = "jupyterhub-user"
         secretKey = random_password.jupyterhub_secretkey.result
-        policy    = "jupterhub-policy"
+        policy    = "jupyterhub-policy"
       },
       {
         accessKey = "pinot-user"
