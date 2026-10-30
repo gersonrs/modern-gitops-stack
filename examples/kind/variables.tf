@@ -20,5 +20,5 @@ variable "corporate_sso_client_secret" {
   EOT
   type        = string
   sensitive   = true
-  default     = "7IfEV2od8LxYmMKqrXUicCcwlZEJHVab"
+  nullable    = false
 }
