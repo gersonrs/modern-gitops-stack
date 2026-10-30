@@ -295,7 +295,7 @@ module "kube-prometheus-stack" {
 }
 
 module "kiali" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kiali.git?ref=v1.4.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kiali.git?ref=v1.5.0"
 
   cluster_name           = local.cluster_name
   subdomain              = local.subdomain
@@ -305,11 +305,13 @@ module "kiali" {
   app_autosync           = local.app_autosync
   enable_service_monitor = local.enable_service_monitor
   grafana_admin_password = module.kube-prometheus-stack.grafana_admin_password
+  oidc                   = module.oidc.oidc
 
   dependency_ids = {
     argocd                = module.argocd_bootstrap.id
     istio                 = module.istio.id
     kube-prometheus-stack = module.kube-prometheus-stack.id
+    oidc                  = module.oidc.id
   }
 }
 
