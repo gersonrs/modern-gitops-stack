@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.24.0](https://github.com/gersonrs/modern-gitops-stack/compare/v1.23.0...v1.24.0) (2026-10-30)
+
+
+### 🚀 New Features
+
+* adjust repo ([7c2aa7c](https://github.com/gersonrs/modern-gitops-stack/commit/7c2aa7cc1074948e20fa4faa3bee452b50b64206))
+* enable jupyterhub module and consolidate kind example fixes ([a59314f](https://github.com/gersonrs/modern-gitops-stack/commit/a59314f89ffc3110ab76125c6a2a4a0525daa7b5))
+* enable jupyterhub module in kind example ([f99a5e1](https://github.com/gersonrs/modern-gitops-stack/commit/f99a5e13d49c53076fb1295a73a26b6510bef726))
+* **examples:** register ray module repository in argocd bootstrap ([124ce26](https://github.com/gersonrs/modern-gitops-stack/commit/124ce26ffa81b8db443a4ad2cdc6f08895b3507e))
+* **examples:** upgrade kiali module to v1.5.0 with oidc ([c4c1e9a](https://github.com/gersonrs/modern-gitops-stack/commit/c4c1e9a32bd09fa7ce1e5bf164d73b85923b7021))
+* update workflows ([2e7ea19](https://github.com/gersonrs/modern-gitops-stack/commit/2e7ea190c13d807ecad7ffb6de3eb25221c261a6))
+* update workflows ([5230b71](https://github.com/gersonrs/modern-gitops-stack/commit/5230b71d2ee11093243efe41bde2b6e1c7b68611))
+
+
+### 🔥 Bug Fixes
+
+* **examples:** correct jupyterhub user and policy names ([4af5684](https://github.com/gersonrs/modern-gitops-stack/commit/4af56841fb85bf4908c1127e14e2d9c5bcd07ddc))
+* **examples:** pin minio module to the published v2.14.0 tag ([6c93c1f](https://github.com/gersonrs/modern-gitops-stack/commit/6c93c1ff95b47fd9aaf4ac63efc9fba9c87d1235))
+* **examples:** remove hardcoded corporate sso client secret ([d2efe28](https://github.com/gersonrs/modern-gitops-stack/commit/d2efe2855c3dfe45b38683b2d6ba199f2a80018d))
+* pin kafka-ui and schema-registry modules to v1.5.1 ([588ede0](https://github.com/gersonrs/modern-gitops-stack/commit/588ede0fb16cc63d87cb1215cba66f08d6323f60))
+* pin kafka-ui and schema-registry to v1.5.1 ([d9563f6](https://github.com/gersonrs/modern-gitops-stack/commit/d9563f6987cde3f30e70b0823af4bd3f101d3e1b))
+
+
+### ⚙️ Chores
+
+* **examples:** track istio module on develop branch ([e64bd8b](https://github.com/gersonrs/modern-gitops-stack/commit/e64bd8bd39d9daeaec97aede043353b2989a4555))
+* **examples:** use local minio module path ([cef2db2](https://github.com/gersonrs/modern-gitops-stack/commit/cef2db228194eb00c45f67cb216f2675e2cfeff6))
+
 ## [1.23.0](https://github.com/gersonrs/modern-gitops-stack/compare/v1.22.1...v1.23.0) (2026-02-15)
 
 
