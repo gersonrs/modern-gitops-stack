@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/gersonrs/modern-gitops-stack/compare/v1.24.0...v2.0.0) (2026-11-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* pin providers and raise the Terraform baseline in the examples ([#253](https://github.com/gersonrs/modern-gitops-stack/issues/253))
+
+### 🚀 New Features
+
+* pin providers and raise the Terraform baseline in the examples ([#253](https://github.com/gersonrs/modern-gitops-stack/issues/253)) ([6dae281](https://github.com/gersonrs/modern-gitops-stack/commit/6dae281e29f42967aa715103201e46d97b003eaa))
+
 ## [1.24.0](https://github.com/gersonrs/modern-gitops-stack/compare/v1.23.0...v1.24.0) (2026-10-30)
 
 
