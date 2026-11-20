@@ -1,5 +1,5 @@
 # module "mlflow" {
-#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-mlflow.git?ref=v1.5.0"
+#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-mlflow.git?ref=v2.0.0"
 #
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
@@ -37,7 +37,7 @@
 # }
 
 # module "strimzi" {
-#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-strimzi.git?ref=v1.6.0"
+#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-strimzi.git?ref=v2.0.0"
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
 #   subdomain              = local.subdomain
@@ -51,7 +51,7 @@
 # }
 
 # module "kafka" {
-#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-kafka.git?ref=v2.13.0"
+#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-kafka.git?ref=v3.0.0"
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
 #   subdomain              = local.subdomain
@@ -66,7 +66,7 @@
 # }
 
 # module "cp-schema-registry" {
-#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-cp-schema-registry.git?ref=v1.6.0"
+#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-cp-schema-registry.git?ref=v2.0.0"
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
 #   subdomain              = local.subdomain
@@ -89,7 +89,7 @@
 # }
 
 # module "kafka-ui" {
-#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-kafka-ui.git?ref=v1.6.0"
+#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-kafka-ui.git?ref=v2.0.1"
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
 #   subdomain              = local.subdomain
@@ -113,7 +113,7 @@
 # }
 
 # module "trino" {
-#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-trino.git?ref=v1.1.1"
+#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-trino.git?ref=v2.0.1"
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
 #   subdomain              = local.subdomain
@@ -146,7 +146,7 @@
 
 
 # module "pinot" {
-#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-pinot.git?ref=v1.1.1"
+#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-pinot.git?ref=v2.0.1"
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
 #   subdomain              = local.subdomain
@@ -168,7 +168,7 @@
 # }
 
 # module "zookeeper" {
-#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-zookeeper.git?ref=v2.0.0"
+#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-zookeeper.git?ref=v3.0.0"
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
 #   subdomain              = local.subdomain
@@ -182,7 +182,7 @@
 # }
 
 # module "nifi" {
-#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-nifi.git?ref=v1.5.0"
+#   source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-nifi.git?ref=v2.0.0"
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
 #   subdomain              = local.subdomain
@@ -197,7 +197,7 @@
 # }
 
 # module "spark" {
-#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-spark.git?ref=v1.5.1"
+#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-spark.git?ref=v2.0.1"
 
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
@@ -221,7 +221,7 @@
 # }
 
 # module "hive-metastore" {
-#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-hive-metastore.git?ref=v1.2.0"
+#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-hive-metastore.git?ref=v2.0.0"
 
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
@@ -255,7 +255,7 @@
 # }
 
 # module "kuberay" {
-#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-ray.git?ref=v1.5.0"
+#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-ray.git?ref=v2.0.0"
 
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain
@@ -317,7 +317,7 @@ module "jupyterhub" {
 }
 
 # module "qdrant" {
-#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-qdrant.git?ref=v1.2.0"
+#   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-qdrant.git?ref=v2.0.0"
 
 #   cluster_name           = local.cluster_name
 #   base_domain            = local.base_domain

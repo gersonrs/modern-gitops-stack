@@ -1,13 +1,13 @@
 # --- Modules bases ---
 module "kind" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-cluster-kind.git?ref=v2.5.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-cluster-kind.git?ref=v3.0.0"
 
   cluster_name       = local.cluster_name
   kubernetes_version = local.kubernetes_version
 }
 
 module "metallb" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-metallb.git?ref=v2.8.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-metallb.git?ref=v3.0.0"
 
   subnet = module.kind.kind_subnet
 
@@ -15,7 +15,7 @@ module "metallb" {
 }
 
 module "argocd_bootstrap" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git//bootstrap?ref=v5.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git//bootstrap?ref=v6.0.0"
   argocd_projects = {
     "${local.cluster_name}" = {
       destination_cluster = "in-cluster"
@@ -57,7 +57,7 @@ module "argocd_bootstrap" {
 }
 
 module "metrics-server" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-metrics-server.git?ref=v2.11.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-metrics-server.git?ref=v3.0.0"
 
   argocd_project = local.cluster_name
 
@@ -71,7 +71,7 @@ module "metrics-server" {
 }
 
 module "cert-manager" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-cert-manager.git//self-signed?ref=v2.11.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-cert-manager.git//self-signed?ref=v3.0.0"
 
   argocd_project = local.cluster_name
 
@@ -84,7 +84,7 @@ module "cert-manager" {
 }
 
 module "istio" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-istio.git//kind?ref=develop"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-istio.git//kind?ref=v2.0.0"
 
   cluster_name           = local.cluster_name
   subdomain              = local.subdomain
@@ -99,7 +99,7 @@ module "istio" {
 }
 
 module "postgresql" {
-  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-postgresql.git?ref=v2.15.0"
+  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-postgresql.git?ref=v3.0.0"
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
   subdomain              = local.subdomain
@@ -115,7 +115,7 @@ module "postgresql" {
 }
 
 module "keycloak" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git?ref=v2.10.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git?ref=v3.0.0"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -138,7 +138,7 @@ module "keycloak" {
 }
 
 module "oidc" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git//oidc_bootstrap?ref=v2.10.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git//oidc_bootstrap?ref=v3.0.0"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -155,7 +155,7 @@ module "oidc" {
     user_info_url     = "https://sso-corp.luizalabs.com/realms/corp/protocol/openid-connect/userinfo"
     jwks_url          = "https://sso-corp.luizalabs.com/realms/corp/protocol/openid-connect/certs"
     logout_url        = "https://sso-corp.luizalabs.com/realms/corp/protocol/openid-connect/logout"
-    client_id         = "compass_api"
+    client_id         = "compass_mgc"
     client_secret     = var.corporate_sso_client_secret
   }
 
@@ -168,7 +168,7 @@ module "oidc" {
 
 
 module "minio" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-minio.git?ref=v2.14.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-minio.git?ref=v3.0.0"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -189,7 +189,7 @@ module "minio" {
 
 
 module "loki-stack" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-loki-stack.git//kind?ref=v2.9.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-loki-stack.git//kind?ref=v3.0.0"
 
   argocd_project = local.cluster_name
 
@@ -209,7 +209,7 @@ module "loki-stack" {
 }
 
 module "thanos" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-thanos.git//kind?ref=v2.10.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-thanos.git//kind?ref=v3.0.0"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -250,7 +250,7 @@ module "thanos" {
 }
 
 module "kube-prometheus-stack" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//kind?ref=v2.11.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//kind?ref=v3.0.0"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -295,7 +295,7 @@ module "kube-prometheus-stack" {
 }
 
 module "kiali" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kiali.git?ref=v1.5.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kiali.git?ref=v2.0.0"
 
   cluster_name           = local.cluster_name
   subdomain              = local.subdomain
@@ -318,7 +318,7 @@ module "kiali" {
 
 
 module "argocd" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git?ref=v5.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git?ref=v6.0.0"
 
   base_domain              = local.base_domain
   cluster_name             = local.cluster_name
