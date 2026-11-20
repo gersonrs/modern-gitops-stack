@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.9.0"
+
   backend "azurerm" {
     # All these resources must exist before Terraform can be initialized.
     resource_group_name  = "RG_NAME"                # The Resource Group's name where the Storage Account for the Terraform state exists.
@@ -11,23 +13,23 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4"
+      version = "~> 3.117"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 3"
+      version = "~> 3.3"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2"
+      version = "~> 2.38"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 3"
+      version = "~> 3.3"
     }
     argocd = {
-      source  = "oboukili/argocd"
-      version = "~> 6"
+      source  = "argoproj-labs/argocd"
+      version = "~> 7.18"
     }
   }
 }

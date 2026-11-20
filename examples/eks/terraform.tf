@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.9.0"
+
   backend "s3" {
     encrypt        = true
     bucket         = "GersonRS-aws-is-sandbox-terraform-state"
@@ -14,15 +16,15 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2"
+      version = "~> 2.38"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 3"
+      version = "~> 3.3"
     }
     argocd = {
-      source  = "oboukili/argocd"
-      version = "~> 6"
+      source  = "argoproj-labs/argocd"
+      version = "~> 7.18"
     }
   }
 }
