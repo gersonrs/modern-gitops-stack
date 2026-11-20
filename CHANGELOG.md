@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.0.0...v2.1.0) (2026-11-20)
+
+
+### 🚀 New Features
+
+* consume the new module releases in the kind example ([#255](https://github.com/gersonrs/modern-gitops-stack/issues/255)) ([7b35236](https://github.com/gersonrs/modern-gitops-stack/commit/7b352364b00f9a57e1f082bf528ebd3339b65203))
+
+
+### 🔥 Bug Fixes
+
+* use the patched thanos and postgresql releases ([#257](https://github.com/gersonrs/modern-gitops-stack/issues/257)) ([223b7f9](https://github.com/gersonrs/modern-gitops-stack/commit/223b7f9f0fbfd5e62903661885ae7debc38126ca))
+
 ## [2.0.0](https://github.com/gersonrs/modern-gitops-stack/compare/v1.24.0...v2.0.0) (2026-11-20)
 
 
