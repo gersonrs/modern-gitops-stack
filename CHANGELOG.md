@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.1.0...v2.2.0) (2026-11-21)
+
+
+### 🚀 New Features
+
+* **kind:** wire the app modules and document the incremental test flow ([8816b6b](https://github.com/gersonrs/modern-gitops-stack/commit/8816b6b3dbf5fce269691b0e5dc04b9f675576c6))
+
 ## [2.1.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.0.0...v2.1.0) (2026-11-20)
 
 
