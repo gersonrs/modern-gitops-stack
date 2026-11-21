@@ -5,7 +5,8 @@ No repositório, como em um https://developer.hashicorp.com/terraform/tutorials/
 
 * *`terraform.tf`* - declaração dos provedores Tofu/Terraform utilizados neste projeto bem como sua configuração;
 * *`locals.tf`* - variáveis locais usadas pelos módulos Modern Gitops Stack;
-* *`main.tf`* - definição de todos os módulos implantados;
+* *`main.tf`* - definição dos módulos de plataforma (cluster, Argo CD, malha, observabilidade, segurança e dados compartilhados);
+* *`apps.tf`* - definição dos módulos de aplicação que rodam sobre a plataforma;
 * *`s3_bucket.tf`* - configuração do bucket MinIO, usado como backend para Loki e Thanos;
 * *`outputs.tf`* - as variáveis de saída do Modern Gitops Stack, por exemplo. credenciais e o arquivo `.kubeconfig` para usar com `kubectl`;
 
@@ -51,6 +52,8 @@ NOTE: Ao acessar os ingress no seu navegador, obviamente você verá avisos info
 +
 TIP: Você também pode adicionar seus próprios módulos Terraform neste arquivo ou em qualquer outro arquivo na pasta raiz. Um bom lugar para começar a escrever seu próprio módulo é clonar o repositório https://github.com/GersonRS/modern-gitops-stack-module-template[modern-gitops-stack-module-template] e adaptá-lo ao que você precisa;
 
+IMPORTANTE: A stack completa é pesada (várias dezenas de pods, imagens de vários GB e diversos PVCs). Em máquinas com pouco disco ou memória, implante primeiro apenas o `main.tf` e depois habilite as aplicações do `apps.tf` em grupos, conforme <<incremental-deployment,implantação incremental>>.
+
 3. No módulo `oidc`, adapte a variável `user_map` como desejar (verifique a seção <<oidc-authentication,OIDC>> para mais informações).
 
 4. A partir da origem da implantação de exemplo, inicialize o Tofu/Terraform, que baixa todos os provedores e módulos necessários localmente (eles serão armazenados na pasta oculta `.terraform`);
@@ -81,6 +84,67 @@ IMPORTANTE: Este sinalizador precisa ser definido como `false` para a primeira i
 NOTA: Você pode definir o sinalizador como `true` no arquivo `locals.tf` ou pode simplesmente deletar a linha nas declarações dos módulos, já que esta variável é definida como `true` por padrão em cada módulo.
 +
 TIP: Anote o local chamado `app_autosync`. Se você definir a condição do operador ternário como `false` você desabilitará a sincronização automática para todos os módulos do Modern Gitops Stack. Isso permite que você escolha quando sincronizar manualmente o módulo na interface do Argo CD e é útil para fins de solução de problemas.
+
+[[incremental-deployment]]
+== Implantação incremental
+
+A stack completa consome bastante disco e memória: as imagens do Airflow, NiFi, Pinot e JupyterHub somam vários GB e cada aplicação cria seus próprios PVCs. Em máquinas com recursos limitados, validar tudo de uma vez costuma encher o disco antes do final.
+
+A abordagem recomendada é implantar por grupos, limpando os resíduos do grupo anterior antes de seguir para o próximo.
+
+=== 1. Plataforma (`main.tf`)
+
+Deixe apenas os módulos do `main.tf` habilitados e comente todos os módulos do `apps.tf`. Isso sobe cluster, MetalLB, Argo CD, Istio, cert-manager, Traefik, Keycloak, observabilidade e os serviços de dados compartilhados (PostgreSQL e MinIO).
+
+[source,bash]
+----
+tofu init
+tofu apply
+----
+
+Aguarde todos os Applications ficarem `Synced` e `Healthy`:
+
+[source,bash]
+----
+kubectl get applications -n argocd \
+  -o custom-columns='NAME:.metadata.name,SYNC:.status.sync.status,HEALTH:.status.health.status'
+----
+
+=== 2. Aplicações (`apps.tf`)
+
+Habilite um grupo por vez, execute `tofu apply` e valide. A tabela abaixo lista os grupos que se integram entre si e o teste funcional usado para cada um.
+
+[cols="2,3,4",options="header"]
+|===
+| Grupo | Módulos | Validação
+| Kafka | `strimzi`, `kafka`, `cp-schema-registry`, `kafka-ui` | `POST /subjects/test/versions` no Schema Registry retorna um `id`
+| ZooKeeper + NiFi | `zookeeper`, `nifi` | `GET /nifi-api/access/config` retorna 200
+| Pinot + Trino | `pinot`, `trino` | `CREATE TABLE` / `INSERT` / `SELECT` via catálogo `postgres` do Trino
+| Spark + Hive | `spark`, `hive-metastore` | `SparkApplication` do SparkPi conclui com `COMPLETED`
+| ML | `mlflow`, `qdrant` | `/health` do MLflow retorna 200; `healthz` do Qdrant passa
+| Ray + Airflow | `kuberay`, `airflow` | `RayJob` conclui com `SUCCEEDED`; `airflow dags list` carrega as DAGs
+| JupyterHub | `jupyterhub` | `/hub/login` no proxy público retorna 200
+|===
+
+=== 3. Limpeza entre grupos
+
+Antes de remover um grupo, desabilite o autosync do Application para o Argo CD não recriar os recursos durante a limpeza:
+
+[source,bash]
+----
+kubectl -n argocd patch application <app> --type=json \
+  -p='[{"op":"remove","path":"/spec/syncPolicy/automated"}]'
+----
+
+Depois comente os módulos no `apps.tf`, rode `tofu apply` para remover os Applications e apague o namespace do grupo. Por fim, libere as imagens:
+
+[source,bash]
+----
+docker exec <kind-node> crictl rmi --prune
+docker builder prune -af
+----
+
+WARNING: Ao recriar o PVC do PostgreSQL, todo o schema é perdido. O Keycloak guarda seu schema nesse banco e volta a falhar com `relation "user_entity" does not exist`; reinicie o pod `keycloak-0` para que ele execute as migrations novamente e reaplique o módulo `oidc` para recriar o realm.
 
 == Acesse o cluster e os aplicativos Modern Gitops Stack
 
