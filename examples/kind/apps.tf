@@ -344,7 +344,7 @@ module "airflow" {
 }
 
 module "jupyterhub" {
-  source         = "git::https://github.com/GersonRS/modern-gitops-stack-module-jupyterhub.git?ref=v2.0.1"
+  source         = "git::https://github.com/GersonRS/modern-gitops-stack-module-jupyterhub.git?ref=v2.0.2"
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
   subdomain      = local.subdomain
