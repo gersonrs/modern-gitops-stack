@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/gersonrs/modern-gitops-stack/compare/v2.2.1...v2.2.2) (2026-11-21)
+
+
+### 🔥 Bug Fixes
+
+* **kind:** bump jupyterhub to the release with the null-safe output ([c068635](https://github.com/gersonrs/modern-gitops-stack/commit/c068635b9f5ed848bd2e64462738fc30363150ce))
+
 ## [2.2.1](https://github.com/gersonrs/modern-gitops-stack/compare/v2.2.0...v2.2.1) (2026-11-21)
 
 
