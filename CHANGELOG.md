@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/gersonrs/modern-gitops-stack/compare/v2.2.0...v2.2.1) (2026-11-21)
+
+
+### 📚 Documentation
+
+* **kind:** document the incremental deployment flow ([e81259d](https://github.com/gersonrs/modern-gitops-stack/commit/e81259d8d06ede68f78623577784462a0a6dafc8))
+
 ## [2.2.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.1.0...v2.2.0) (2026-11-21)
 
 
