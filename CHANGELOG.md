@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.3.0...v2.4.0) (2026-11-22)
+
+
+### 🚀 New Features
+
+* **kind:** bootstrap the Prometheus Operator CRDs before the stack ([97ad727](https://github.com/gersonrs/modern-gitops-stack/commit/97ad727d7d8c2eb2055887f40ee867a09ee798d6))
+
 ## [2.3.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.2.2...v2.3.0) (2026-11-22)
 
 
