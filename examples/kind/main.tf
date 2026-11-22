@@ -70,6 +70,21 @@ module "metrics-server" {
   }
 }
 
+# Prometheus Operator CRDs (ServiceMonitor, PodMonitor, PrometheusRule, ...)
+# are installed before any other module so every application can enable its
+# ServiceMonitor from the very first apply. Without this, enabling
+# enable_service_monitor on the first run broke modules installed before
+# kube-prometheus-stack (cert-manager) because the CRD did not exist yet.
+# kube-prometheus-stack runs with crds.enabled=false, so this is the only
+# owner of those objects.
+module "crds_bootstrap" {
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//crds_bootstrap?ref=v3.2.0"
+
+  dependency_ids = {
+    argocd = module.argocd_bootstrap.id
+  }
+}
+
 module "cert-manager" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-cert-manager.git//self-signed?ref=v3.0.0"
 
@@ -79,7 +94,8 @@ module "cert-manager" {
   enable_service_monitor = local.enable_service_monitor
 
   dependency_ids = {
-    argocd = module.argocd_bootstrap.id
+    argocd         = module.argocd_bootstrap.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
@@ -93,8 +109,9 @@ module "istio" {
   app_autosync           = local.app_autosync
   enable_service_monitor = local.enable_service_monitor
   dependency_ids = {
-    argocd       = module.argocd_bootstrap.id
-    cert-manager = module.cert-manager.id
+    argocd         = module.argocd_bootstrap.id
+    cert-manager   = module.cert-manager.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
@@ -109,8 +126,9 @@ module "postgresql" {
   enable_service_monitor = local.enable_service_monitor
 
   dependency_ids = {
-    argocd = module.argocd_bootstrap.id
-    istio  = module.istio.id
+    argocd         = module.argocd_bootstrap.id
+    istio          = module.istio.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
@@ -131,9 +149,10 @@ module "keycloak" {
   }
 
   dependency_ids = {
-    istio        = module.istio.id
-    cert-manager = module.cert-manager.id
-    postgresql   = module.postgresql.id
+    istio          = module.istio.id
+    cert-manager   = module.cert-manager.id
+    postgresql     = module.postgresql.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
@@ -144,20 +163,6 @@ module "oidc" {
   base_domain    = local.base_domain
   subdomain      = local.subdomain
   cluster_issuer = local.cluster_issuer
-
-  corporate_identity_provider = {
-    enabled           = true
-    alias             = "magalu-sso"
-    display_name      = "Magalu SSO"
-    issuer            = "https://sso-corp.luizalabs.com/realms/corp"
-    authorization_url = "https://sso-corp.luizalabs.com/realms/corp/protocol/openid-connect/auth"
-    token_url         = "https://sso-corp.luizalabs.com/realms/corp/protocol/openid-connect/token"
-    user_info_url     = "https://sso-corp.luizalabs.com/realms/corp/protocol/openid-connect/userinfo"
-    jwks_url          = "https://sso-corp.luizalabs.com/realms/corp/protocol/openid-connect/certs"
-    logout_url        = "https://sso-corp.luizalabs.com/realms/corp/protocol/openid-connect/logout"
-    client_id         = "compass_mgc"
-    client_secret     = var.corporate_sso_client_secret
-  }
 
   dependency_ids = {
     keycloak   = module.keycloak.id
@@ -180,9 +185,10 @@ module "minio" {
   config_minio           = local.minio_config
   oidc                   = module.oidc.oidc
   dependency_ids = {
-    istio        = module.istio.id
-    cert-manager = module.cert-manager.id
-    oidc         = module.oidc.id
+    istio          = module.istio.id
+    cert-manager   = module.cert-manager.id
+    oidc           = module.oidc.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
@@ -203,8 +209,9 @@ module "loki-stack" {
   }
 
   dependency_ids = {
-    istio = module.istio.id
-    minio = module.minio.id
+    istio          = module.istio.id
+    minio          = module.minio.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
@@ -240,17 +247,18 @@ module "thanos" {
   ]
 
   dependency_ids = {
-    argocd       = module.argocd_bootstrap.id
-    istio        = module.istio.id
-    cert-manager = module.cert-manager.id
-    minio        = module.minio.id
-    keycloak     = module.keycloak.id
-    oidc         = module.oidc.id
+    argocd         = module.argocd_bootstrap.id
+    istio          = module.istio.id
+    cert-manager   = module.cert-manager.id
+    minio          = module.minio.id
+    keycloak       = module.keycloak.id
+    oidc           = module.oidc.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
 module "kube-prometheus-stack" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//kind?ref=v3.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//kind?ref=v3.2.0"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -287,10 +295,11 @@ module "kube-prometheus-stack" {
   ]
 
   dependency_ids = {
-    istio        = module.istio.id
-    cert-manager = module.cert-manager.id
-    minio        = module.minio.id
-    oidc         = module.oidc.id
+    istio          = module.istio.id
+    cert-manager   = module.cert-manager.id
+    minio          = module.minio.id
+    oidc           = module.oidc.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
@@ -312,24 +321,7 @@ module "kiali" {
     istio                 = module.istio.id
     kube-prometheus-stack = module.kube-prometheus-stack.id
     oidc                  = module.oidc.id
-  }
-}
-
-
-
-# Traefik provides the IngressClass used by pinot, trino, spark, hive-metastore
-# and qdrant. It runs alongside Istio, which serves the gateway HTTPRoutes.
-module "traefik" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-traefik.git//kind?ref=v3.0.2"
-
-  argocd_project         = local.cluster_name
-  argocd_labels          = {}
-  destination_cluster    = "in-cluster"
-  target_revision        = "v3.0.2"
-  enable_service_monitor = local.enable_service_monitor
-  app_autosync           = local.app_autosync
-  dependency_ids = {
-    argocd = module.argocd_bootstrap.id
+    crds_bootstrap        = module.crds_bootstrap.id
   }
 }
 
