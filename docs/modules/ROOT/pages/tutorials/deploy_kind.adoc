@@ -77,11 +77,11 @@ include::examples$deploy_examples/kind/locals.tf[]
 tofu apply
 ----
 
-7. Após a primeira implantação (observe a etapa de solução de problemas relacionada ao Argo CD), você pode ir para locais e habilitar o booleano _ServiceMonitor_ para ativar os exportadores do Prometheus que enviarão métricas para o Prometheus;
+7. O booleano _ServiceMonitor_ já vem habilitado (`enable_service_monitor = true` em `locals.tf`) e funciona **desde o primeiro apply**, porque o módulo `crds_bootstrap` instala os CRDs do Prometheus Operator antes de qualquer outra aplicação;
 +
-IMPORTANTE: Este sinalizador precisa ser definido como `false` para a primeira inicialização do cluster, caso contrário, os aplicativos falharão na implantação enquanto as definições de recursos personalizados do kube-prometheus-stack ainda não foram criadas.
+NOTE: Antes existia a exigência de manter o sinalizador em `false` na primeira implantação e só habilitá-lo depois, porque aplicações instaladas antes do `kube-prometheus-stack` (como o `cert-manager`) falhavam ao criar um `ServiceMonitor` sem o CRD correspondente. O `crds_bootstrap` resolve isso na raiz.
 +
-NOTA: Você pode definir o sinalizador como `true` no arquivo `locals.tf` ou pode simplesmente deletar a linha nas declarações dos módulos, já que esta variável é definida como `true` por padrão em cada módulo.
+TIP: Se quiser desabilitar os exportadores, defina `enable_service_monitor = false` em `locals.tf` ou remova a linha nas declarações dos módulos, já que a variável é `true` por padrão em cada módulo.
 +
 TIP: Anote o local chamado `app_autosync`. Se você definir a condição do operador ternário como `false` você desabilitará a sincronização automática para todos os módulos do Modern Gitops Stack. Isso permite que você escolha quando sincronizar manualmente o módulo na interface do Argo CD e é útil para fins de solução de problemas.
 
