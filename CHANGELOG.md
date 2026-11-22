@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.4.1...v2.5.0) (2026-11-22)
+
+
+### 🚀 New Features
+
+* **kind:** upgrade kube-prometheus-stack to v4.0.0 and restore traefik ([8ff1eb6](https://github.com/gersonrs/modern-gitops-stack/commit/8ff1eb6d5e2b8a523352cec1770cc1346a9b312b))
+
 ## [2.4.1](https://github.com/gersonrs/modern-gitops-stack/compare/v2.4.0...v2.4.1) (2026-11-22)
 
 
