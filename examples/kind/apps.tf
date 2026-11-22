@@ -143,7 +143,7 @@ module "zookeeper" {
 }
 
 module "pinot" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-pinot.git?ref=v2.0.3"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-pinot.git?ref=v3.0.0"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -159,14 +159,16 @@ module "pinot" {
     secret_access_key = module.minio.minio_root_user_credentials.password
   }
   dependency_ids = {
-    argocd  = module.argocd_bootstrap.id
-    traefik = module.traefik.id
-    minio   = module.minio.id
+    argocd = module.argocd_bootstrap.id
+    minio  = module.minio.id
   }
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
+
 }
 
 module "trino" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-trino.git?ref=v2.0.1"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-trino.git?ref=v3.0.0"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -190,16 +192,18 @@ module "trino" {
   }
   dependency_ids = {
     argocd     = module.argocd_bootstrap.id
-    traefik    = module.traefik.id
     oidc       = module.oidc.id
     minio      = module.minio.id
     postgresql = module.postgresql.id
     pinot      = module.pinot.id
   }
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
+
 }
 
 module "nifi" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-nifi.git?ref=v2.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-nifi.git?ref=v3.0.0"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -212,6 +216,9 @@ module "nifi" {
   dependency_ids = {
     zookeeper = module.zookeeper.id
   }
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
+
 }
 
 module "spark" {
@@ -232,14 +239,13 @@ module "spark" {
 
   dependency_ids = {
     argocd       = module.argocd_bootstrap.id
-    traefik      = module.traefik.id
     cert-manager = module.cert-manager.id
     minio        = module.minio.id
   }
 }
 
 module "hive-metastore" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-hive-metastore.git?ref=v2.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-hive-metastore.git?ref=v3.0.0"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -264,12 +270,14 @@ module "hive-metastore" {
 
   dependency_ids = {
     argocd       = module.argocd_bootstrap.id
-    traefik      = module.traefik.id
     cert-manager = module.cert-manager.id
     minio        = module.minio.id
     postgresql   = module.postgresql.id
     spark        = module.spark.id
   }
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
+
 }
 
 module "kuberay" {
@@ -291,7 +299,7 @@ module "kuberay" {
 }
 
 module "qdrant" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-qdrant.git?ref=v2.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-qdrant.git?ref=v3.0.0"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -303,9 +311,11 @@ module "qdrant" {
 
   dependency_ids = {
     argocd       = module.argocd_bootstrap.id
-    traefik      = module.traefik.id
     cert-manager = module.cert-manager.id
   }
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
+
 }
 
 module "airflow" {
@@ -344,7 +354,7 @@ module "airflow" {
 }
 
 module "jupyterhub" {
-  source         = "git::https://github.com/GersonRS/modern-gitops-stack-module-jupyterhub.git?ref=v2.0.2"
+  source         = "git::https://github.com/GersonRS/modern-gitops-stack-module-jupyterhub.git?ref=v2.1.0"
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
   subdomain      = local.subdomain
