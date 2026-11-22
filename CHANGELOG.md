@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1](https://github.com/gersonrs/modern-gitops-stack/compare/v2.4.0...v2.4.1) (2026-11-22)
+
+
+### 📚 Documentation
+
+* **kind:** ServiceMonitor now works on the first apply ([a4ecbde](https://github.com/gersonrs/modern-gitops-stack/commit/a4ecbde00ae79104e770be4d8123cb36a6b95826))
+
 ## [2.4.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.3.0...v2.4.0) (2026-11-22)
 
 
