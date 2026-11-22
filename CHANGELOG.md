@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.2.2...v2.3.0) (2026-11-22)
+
+
+### 🚀 New Features
+
+* **kind:** extend keycloak session lifetimes to a working day ([efd722b](https://github.com/gersonrs/modern-gitops-stack/commit/efd722be5197897603405556eb488b229022b27d))
+
 ## [2.2.2](https://github.com/gersonrs/modern-gitops-stack/compare/v2.2.1...v2.2.2) (2026-11-21)
 
 
