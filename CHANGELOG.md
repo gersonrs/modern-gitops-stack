@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.5.0...v3.0.0) (2026-11-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* the traefik module is gone and the migrated applications are served by the Istio gateway, so the Traefik IngressClass no longer exists.
+
+### 🚀 New Features
+
+* drop Traefik and upgrade the remaining charts ([c92ae28](https://github.com/gersonrs/modern-gitops-stack/commit/c92ae28f3119cca2807ae917729b93f5ba37076a))
+
 ## [2.5.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.4.1...v2.5.0) (2026-11-22)
 
 
