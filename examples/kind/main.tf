@@ -78,7 +78,7 @@ module "metrics-server" {
 # kube-prometheus-stack runs with crds.enabled=false, so this is the only
 # owner of those objects.
 module "crds_bootstrap" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//crds_bootstrap?ref=v3.2.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//crds_bootstrap?ref=v4.0.0"
 
   dependency_ids = {
     argocd = module.argocd_bootstrap.id
@@ -258,7 +258,7 @@ module "thanos" {
 }
 
 module "kube-prometheus-stack" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//kind?ref=v3.2.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git//kind?ref=v4.0.0"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -322,6 +322,23 @@ module "kiali" {
     kube-prometheus-stack = module.kube-prometheus-stack.id
     oidc                  = module.oidc.id
     crds_bootstrap        = module.crds_bootstrap.id
+  }
+}
+
+# Traefik provides the IngressClass used by pinot, trino, spark, hive-metastore
+# and qdrant. It runs alongside Istio, which serves the gateway HTTPRoutes.
+module "traefik" {
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-traefik.git//kind?ref=v3.0.2"
+
+  argocd_project         = local.cluster_name
+  argocd_labels          = {}
+  destination_cluster    = "in-cluster"
+  target_revision        = "v3.0.2"
+  enable_service_monitor = local.enable_service_monitor
+  app_autosync           = local.app_autosync
+  dependency_ids = {
+    argocd         = module.argocd_bootstrap.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
