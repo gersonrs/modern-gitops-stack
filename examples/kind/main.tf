@@ -116,7 +116,7 @@ module "istio" {
 }
 
 module "postgresql" {
-  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-postgresql.git?ref=v4.0.0"
+  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-postgresql.git?ref=v4.0.1"
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
   subdomain              = local.subdomain
