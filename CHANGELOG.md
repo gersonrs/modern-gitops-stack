@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/gersonrs/modern-gitops-stack/compare/v3.0.0...v3.0.1) (2026-11-22)
+
+
+### 🔥 Bug Fixes
+
+* **kind:** bump postgresql to v4.0.1 for the PostgreSQL 18 auth fix ([d521803](https://github.com/gersonrs/modern-gitops-stack/commit/d521803c97d1edf5ed807349051a2e4ce6e4a176))
+
 ## [3.0.0](https://github.com/gersonrs/modern-gitops-stack/compare/v2.5.0...v3.0.0) (2026-11-22)
 
 
