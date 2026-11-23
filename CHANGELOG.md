@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/gersonrs/modern-gitops-stack/compare/v3.0.1...v3.0.2) (2026-11-23)
+
+
+### ⚙️ Chores
+
+* bump app module versions validated on kind ([#267](https://github.com/gersonrs/modern-gitops-stack/issues/267)) ([434eb59](https://github.com/gersonrs/modern-gitops-stack/commit/434eb59b16e0791a83c2ee7020c4ba5e308fa9a5))
+
 ## [3.0.1](https://github.com/gersonrs/modern-gitops-stack/compare/v3.0.0...v3.0.1) (2026-11-22)
 
 
