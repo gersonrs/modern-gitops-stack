@@ -4,7 +4,7 @@
 # ingestion layer (Strimzi/Kafka/Schema Registry), then compute and analytics.
 
 module "mlflow" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-mlflow.git?ref=v2.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-mlflow.git?ref=v2.0.1"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -168,7 +168,7 @@ module "pinot" {
 }
 
 module "trino" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-trino.git?ref=v3.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-trino.git?ref=v3.0.1"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -203,7 +203,7 @@ module "trino" {
 }
 
 module "nifi" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-nifi.git?ref=v3.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-nifi.git?ref=v3.0.2"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -245,7 +245,7 @@ module "spark" {
 }
 
 module "hive-metastore" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-hive-metastore.git?ref=v3.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-hive-metastore.git?ref=v3.0.1"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
@@ -299,7 +299,7 @@ module "kuberay" {
 }
 
 module "qdrant" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-qdrant.git?ref=v3.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-qdrant.git?ref=v3.0.1"
 
   cluster_name           = local.cluster_name
   base_domain            = local.base_domain
