@@ -227,6 +227,26 @@ content:
       branches: []
       tags:
         - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-istio.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-kafka-ui.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-kiali.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-postgresql.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
 
 ui:
   bundle:
