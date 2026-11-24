@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/gersonrs/modern-gitops-stack/compare/v4.0.0...v4.0.1) (2026-11-24)
+
+
+### 📚 Documentation
+
+* publish every module and document the current architecture ([#271](https://github.com/gersonrs/modern-gitops-stack/issues/271)) ([4791a4f](https://github.com/gersonrs/modern-gitops-stack/commit/4791a4f734773a97fec8f61bc6680f51248b556b))
+
 ## [4.0.0](https://github.com/gersonrs/modern-gitops-stack/compare/v3.0.2...v4.0.0) (2026-11-24)
 
 
