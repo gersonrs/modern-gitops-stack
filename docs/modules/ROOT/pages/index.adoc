@@ -1,40 +1,86 @@
-= Modern Gitops Stack
-
-:palavras-chave: tofu, kubernetes, kind, eks, aks, tofu, argocd, grafana, loki, traefik, prometheus, cert-manager, openid-connect, antora
+= Modern GitOps Stack
+:keywords: opentofu, terraform, kubernetes, kind, eks, aks, argocd, istio, keycloak, grafana, prometheus, thanos, loki, kafka, spark, trino, airflow, mlflow, jupyterhub, mlops, gitops
 :sectanchors:
-
-// Essas URLs são usadas no documento como estão para gerar novas URLs, portanto, não devem conter nenhuma barra final.
 :url-main-repo: https://github.com/GersonRS/modern-gitops-stack
-:url-c2c: https://gersonrs.github.io
 
-image::modern-gitops-stack-logo_large.png[Modern Gitops Stack]
+[.mg-hero-banner]
+--
+Plataforma Kubernetes · GitOps, Engenharia de Dados & MLOps
 
-O Modern Gitops Stack oferece uma plataforma Kubernetes para implantações padronizadas, integrando provisionamento automatizado como código, entrega contínua de aplicações e configurações prontas com as melhores ferramentas nativas da nuvem.
+[.mg-hero-lead]
+O **Modern GitOps Stack** entrega uma plataforma Kubernetes padronizada e pronta para produção — unindo provisionamento declarativo como código (**OpenTofu / Terraform**), entrega contínua com **Argo CD**, segurança **OIDC/SSO via Keycloak**, observabilidade unificada e um ecossistema completo de **Dados & IA**, de forma agnóstica à nuvem.
 
-TIP: Para começar com o Modern Gitops Stack de forma fácil, siga o tutorial na página xref:ROOT:tutorials/deploy_kind.adoc[Deployment on KinD]. Este guia irá configurar um playground totalmente funcional do https://kind.sigs.k8s.io/[KinD] em sua máquina local.
+[.mg-cta-row]
+xref:ROOT:tutorials/deploy_kind.adoc[Começar no KinD →] xref:ROOT:tutorials/deploy_eks.adoc[Deploy na AWS EKS] xref:ROOT:tutorials/deploy_aks.adoc[Deploy no Azure AKS] xref:ROOT:explanations/purpose.adoc[Entender a Arquitetura]
+--
 
-== Projeto
+TIP: Quer experimentar a stack completa na sua máquina local? Siga o guia xref:ROOT:tutorials/deploy_kind.adoc[Deploy no KinD] para subir um cluster Kubernetes funcional com TLS, SSO, observabilidade e módulos de dados em poucos minutos.
 
-Este projeto é uma extensão do projeto DevOps Stack. *Ele é voltado para GitOps e MLOps, facilitando o desenvolvimento e a implantação de Modelos de Machine Learning*. O código-fonte é aberto e licenciado sob a Apache 2.
+== Arquitetura em 4 Camadas
 
-== Visão Geral
+O ecossistema é composto por módulos independentes e versionados (OpenTofu/Terraform + Helm Charts reconciliados pelo Argo CD), organizados em quatro pilares principais:
 
-O Modern Gitops Stack é constituído por diversos módulos Tofu/Terraform que são utilizados para implantar um cluster Kubernetes junto com uma stack de componentes, permitindo tanto a implantação de aplicativos quanto a monitorização e resolução de problemas do cluster.
+[.mg-card-grid]
+--
+[.mg-doc-card]
+.IaC & Multi-Cloud
+====
+Provisionamento reproduzível de clusters Kubernetes com **OpenTofu / Terraform** para xref:kind:ROOT:index.adoc[KinD], xref:eks:ROOT:README.adoc[Amazon EKS] e xref:aks:ROOT:README.adoc[Azure AKS], garantindo portabilidade e isolamento entre ambientes.
+====
 
-A escolha do módulo de cluster depende do provedor de nuvem onde o cluster será implantado. Atualmente, o Modern Gitops Stack oferece suporte ao Amazon EKS, Azure AKS e uma implantação de teste local utilizando KinD. Os módulos para os componentes restantes são projetados para serem o mais genéricos possível, embora alguns possuam variantes específicas para diferentes provedores de nuvem.
+[.mg-doc-card]
+.GitOps, Rede & Zero Trust
+====
+Entrega contínua declarativa via xref:argocd:ROOT:README.adoc[Argo CD] (padrão *App of Apps*), certificados automáticos com xref:cert-manager:ROOT:README.adoc[cert-manager], roteamento dinâmico e autenticação centralizada **SSO OIDC** com xref:keycloak:ROOT:README.adoc[Keycloak].
+====
 
-Conforme mostrado nos exemplos, após a criação do cluster, uma instância temporária do ArgoCD é instalada para facilitar a implantação dos demais componentes. Depois que todos os componentes são implantados, essa instância temporária é substituída por uma permanente, que gerenciará as atualizações de todos os componentes e também poderá ser utilizada para implantar suas aplicações. Há módulos disponíveis para a criação e configuração do ArgoCD.
+[.mg-doc-card]
+.Observabilidade Unificada
+====
+Métricas de curto e longo prazo com xref:kube-prometheus-stack:ROOT:README.adoc[Prometheus & Grafana] + xref:thanos:ROOT:README.adoc[Thanos], logs centralizados com xref:loki:ROOT:README.adoc[Loki Stack] e armazenamento S3 compatível via xref:minio:ROOT:README.adoc[MinIO].
+====
 
-== Documentação
+[.mg-doc-card]
+.Engenharia de Dados & MLOps
+====
+Plataforma completa para streaming (xref:kafka:ROOT:README.adoc[Kafka], xref:strimzi:ROOT:README.adoc[Strimzi], xref:nifi:ROOT:README.adoc[NiFi]), processamento analítico (xref:spark:ROOT:README.adoc[Spark], xref:trino:ROOT:README.adoc[Trino], xref:pinot:ROOT:README.adoc[Pinot], xref:airflow:ROOT:README.adoc[Airflow]) e ciclo de vida de IA (xref:jupyterhub:ROOT:README.adoc[JupyterHub], xref:mlflow:ROOT:README.adoc[MLflow], xref:ray:ROOT:README.adoc[Ray], xref:qdrant:ROOT:README.adoc[Qdrant]).
+====
+--
 
-Estas páginas de documentação são a principal fonte de informações sobre o Modern Gitops Stack. Elas são escritas em https://asciidoc.org/[AsciiDoc] e construídas usando https://antora.org/[Antora].
+== Como a Stack Funciona
 
-A documentação principal fornece uma visão geral do Modern Gitops Stack, enquanto as páginas dos módulos contêm informações técnicas específicas sobre cada módulo. Recomendamos que você comece pela documentação geral para entender o panorama de uma implantação do Modern Gitops Stack e, em seguida, consulte a barra lateral para detalhes específicos dos módulos.
+A implantação combina o melhor da **Infraestrutura como Código** com o **GitOps declarativo**:
 
-A documentação e exemplos estão disponíveis no {url-main-repo}[repositório principal no GitHub].
+. **Infraestrutura Base (OpenTofu / Terraform):** provisiona o cluster Kubernetes (KinD, EKS ou AKS), rede, armazenamento e credenciais iniciais.
+. **Bootstrap do Argo CD:** instala uma instância temporária do Argo CD para iniciar a sincronização dos módulos base do cluster.
+. **Operação Contínua (GitOps):** o Argo CD permanente assume a reconciliação contínua de todos os Helm Charts, certificados, políticas de SSO e workloads de dados e ML.
+
+Saiba mais nas seções xref:ROOT:explanations/infrastructure_as_code.adoc[Infraestrutura como Código] e xref:ROOT:explanations/continuous_deployment.adoc[Entrega Contínua & GitOps].
+
+== Catálogo Rápido de Módulos
+
+[cols="1,3",options="header"]
+|===
+| Camada | Módulos Documentados
+
+| **Clusters**
+| xref:kind:ROOT:index.adoc[KinD], xref:eks:ROOT:README.adoc[Amazon EKS], xref:aks:ROOT:README.adoc[Azure AKS]
+
+| **GitOps & Segurança**
+| xref:argocd:ROOT:README.adoc[Argo CD], xref:keycloak:ROOT:README.adoc[Keycloak], xref:oidc-aws-cognito:ROOT:README.adoc[AWS Cognito OIDC], xref:cert-manager:ROOT:README.adoc[cert-manager], xref:istio:ROOT:README.adoc[Istio], xref:metallb:ROOT:README.adoc[MetalLB], xref:reflector:ROOT:README.adoc[Reflector]
+
+| **Observabilidade & Storage**
+| xref:kube-prometheus-stack:ROOT:README.adoc[Prometheus & Grafana], xref:thanos:ROOT:README.adoc[Thanos], xref:loki:ROOT:README.adoc[Loki], xref:metrics-server:ROOT:README.adoc[Metrics Server], xref:minio:ROOT:README.adoc[MinIO], xref:mysql:ROOT:README.adoc[MySQL], xref:qdrant:ROOT:README.adoc[Qdrant], xref:longhorn:ROOT:README.adoc[Longhorn], xref:ebs-csi-driver:ROOT:README.adoc[EBS CSI Driver], xref:efs-csi-driver:ROOT:README.adoc[EFS CSI Driver]
+
+| **Streaming & Ingestão**
+| xref:strimzi:ROOT:README.adoc[Strimzi], xref:kafka:ROOT:README.adoc[Kafka], xref:cp-schema-registry:ROOT:README.adoc[Schema Registry], xref:zookeeper:ROOT:README.adoc[ZooKeeper], xref:nifi:ROOT:README.adoc[NiFi], xref:ingestion-data-stores:ROOT:README.adoc[Gerador de Dados]
+
+| **Data & MLOps**
+| xref:airflow:ROOT:README.adoc[Airflow], xref:spark:ROOT:README.adoc[Spark], xref:spark-cluster:ROOT:README.adoc[Spark Cluster], xref:trino:ROOT:README.adoc[Trino], xref:pinot:ROOT:README.adoc[Pinot], xref:hivemetastore:ROOT:README.adoc[Hive Metastore], xref:ray:ROOT:README.adoc[KubeRay], xref:jupyterhub:ROOT:README.adoc[JupyterHub], xref:mlflow:ROOT:README.adoc[MLflow], xref:kubeflow:ROOT:README.adoc[Kubeflow]
+|===
 
 == Contribuindo
 
-Na seção de contribuição da barra lateral, você encontrará diretrizes sobre como contribuir para o Modern Gitops Stack. Existem xref:ROOT:contributing/general_guidelines.adoc[diretrizes gerais] sobre contribuição, além de explicações sobre xref:ROOT:contributing/modules.adoc[estrutura dos módulos], xref:ROOT:contributing/documentation.adoc[como escrever a documentação] e xref:ROOT:contributing/release.adoc[processo de lançamento].
+O código-fonte é aberto sob licença **Apache 2.0** e disponível no {url-main-repo}[repositório principal no GitHub].
 
-Aceitamos todo tipo de contribuição, seja relatórios de bugs, solicitações de novas funcionalidades, melhorias na documentação ou contribuições de código. Você também pode criar seus próprios módulos de provisionamento de cluster e solicitar nossa assistência, mas não podemos garantir suporte ou manutenção de longo prazo para esses módulos.
+Consulte a seção de contribuição na barra lateral para acompanhar nossas xref:ROOT:contributing/general_guidelines.adoc[diretrizes gerais], xref:ROOT:contributing/modules.adoc[estrutura de módulos], xref:ROOT:contributing/documentation.adoc[padrões de documentação] e xref:ROOT:contributing/release.adoc[processo de release automatizado].

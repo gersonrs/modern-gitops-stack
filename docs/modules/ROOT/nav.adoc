@@ -2,35 +2,63 @@
 * xref:ROOT:index.adoc[Página Inicial]
 * Explicações
 ** xref:ROOT:explanations/purpose.adoc[Propósito]
-** xref:ROOT:explanations/cloud_agnostic.adoc[Agnóstico à nuvem]
-** xref:ROOT:explanations/infrastructure_as_code.adoc[Infraestrutura como código]
-** xref:ROOT:explanations/continuous_deployment.adoc[Implantação Contínua]
-** xref:ROOT:explanations/lifecycle_operations.adoc[Operações de ciclo de vida]
+** xref:ROOT:explanations/cloud_agnostic.adoc[Agnóstico à Nuvem]
+** xref:ROOT:explanations/infrastructure_as_code.adoc[Infraestrutura como Código]
+** xref:ROOT:explanations/continuous_deployment.adoc[Entrega Contínua & GitOps]
+** xref:ROOT:explanations/lifecycle_operations.adoc[Operações de Ciclo de Vida]
 * Tutoriais
-** xref:ROOT:tutorials/deploy_kind.adoc[Deployment no KinD]
-** xref:ROOT:tutorials/deploy_aks.adoc[Deployment na AKS]
-** xref:ROOT:tutorials/deploy_eks.adoc[Deployment na EKS]
-* Diretrizes de contribuição
+** xref:ROOT:tutorials/deploy_kind.adoc[Deploy no KinD (Local)]
+** xref:ROOT:tutorials/deploy_aks.adoc[Deploy no Azure AKS]
+** xref:ROOT:tutorials/deploy_eks.adoc[Deploy na AWS EKS]
+* Contribuindo
 ** xref:ROOT:contributing/general_guidelines.adoc[Diretrizes Gerais]
-** xref:ROOT:contributing/modules.adoc[Modulos do Modern Gitops Stack]
+** xref:ROOT:contributing/modules.adoc[Estrutura dos Módulos]
 ** xref:ROOT:contributing/documentation.adoc[Documentação]
-** xref:ROOT:contributing/release.adoc[Release]
+** xref:ROOT:contributing/release.adoc[Processo de Release]
 ** xref:ROOT:contributing/project_board.adoc[Project Board]
 
-.*Módulos de cluster*
-* xref:aks:ROOT:README.adoc[Azure AKS]
+.*Clusters Kubernetes*
+* xref:kind:ROOT:index.adoc[KinD (Local)]
 * xref:eks:ROOT:README.adoc[Amazon EKS]
-* xref:kind:ROOT:index.adoc[KinD]
+* xref:aks:ROOT:README.adoc[Azure AKS]
 
-.*Módulos de Charts*
+.*GitOps, Rede & Segurança*
 * xref:argocd:ROOT:README.adoc[Argo CD]
+* xref:keycloak:ROOT:README.adoc[Keycloak (SSO OIDC)]
 * xref:oidc-aws-cognito:ROOT:README.adoc[AWS Cognito OIDC]
 * xref:cert-manager:ROOT:README.adoc[cert-manager]
-* xref:keycloak:ROOT:README.adoc[Keycloak]
-* xref:kube-prometheus-stack:ROOT:README.adoc[kube-prometheus-stack]
-* xref:loki:ROOT:README.adoc[Loki]
+* xref:istio:ROOT:README.adoc[Istio (Gateway & Mesh)]
 * xref:metallb:ROOT:README.adoc[MetalLB]
+* xref:reflector:ROOT:README.adoc[Reflector]
 * xref:metrics-server:ROOT:README.adoc[Metrics Server]
-* xref:minio:ROOT:README.adoc[MinIO]
+
+.*Observabilidade & Armazenamento*
+* xref:kube-prometheus-stack:ROOT:README.adoc[Prometheus & Grafana]
 * xref:thanos:ROOT:README.adoc[Thanos]
-* xref:traefik:ROOT:README.adoc[Traefik]
+* xref:loki:ROOT:README.adoc[Loki Stack]
+* xref:minio:ROOT:README.adoc[MinIO (S3)]
+* xref:mysql:ROOT:README.adoc[MySQL]
+* xref:qdrant:ROOT:README.adoc[Qdrant (Vector DB)]
+* xref:longhorn:ROOT:README.adoc[Longhorn (Block Storage)]
+* xref:ebs-csi-driver:ROOT:README.adoc[AWS EBS CSI Driver]
+* xref:efs-csi-driver:ROOT:README.adoc[AWS EFS CSI Driver]
+
+.*Streaming & Ingestão*
+* xref:strimzi:ROOT:README.adoc[Strimzi Operator]
+* xref:kafka:ROOT:README.adoc[Apache Kafka]
+* xref:cp-schema-registry:ROOT:README.adoc[Schema Registry]
+* xref:zookeeper:ROOT:README.adoc[ZooKeeper]
+* xref:nifi:ROOT:README.adoc[Apache NiFi]
+* xref:ingestion-data-stores:ROOT:README.adoc[Gerador de Dados]
+
+.*Data Analytics & MLOps*
+* xref:airflow:ROOT:README.adoc[Apache Airflow]
+* xref:spark:ROOT:README.adoc[Apache Spark Operator]
+* xref:spark-cluster:ROOT:README.adoc[Spark Cluster]
+* xref:trino:ROOT:README.adoc[Trino]
+* xref:pinot:ROOT:README.adoc[Apache Pinot]
+* xref:hivemetastore:ROOT:README.adoc[Hive Metastore]
+* xref:ray:ROOT:README.adoc[KubeRay]
+* xref:jupyterhub:ROOT:README.adoc[JupyterHub]
+* xref:mlflow:ROOT:README.adoc[MLflow]
+* xref:kubeflow:ROOT:README.adoc[Kubeflow]
