@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.2](https://github.com/gersonrs/modern-gitops-stack/compare/v4.0.1...v4.0.2) (2026-11-24)
+
+
+### 📚 Documentation
+
+* build the four modules missing from the Antora playbook ([#273](https://github.com/gersonrs/modern-gitops-stack/issues/273)) ([28e525c](https://github.com/gersonrs/modern-gitops-stack/commit/28e525cf69af94428fe32400d323f23964b72a3d))
+
 ## [4.0.1](https://github.com/gersonrs/modern-gitops-stack/compare/v4.0.0...v4.0.1) (2026-11-24)
 
 
