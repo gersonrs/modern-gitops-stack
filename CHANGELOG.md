@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/gersonrs/modern-gitops-stack/compare/v3.0.2...v4.0.0) (2026-11-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* let each module own its ServiceMonitor default ([#269](https://github.com/gersonrs/modern-gitops-stack/issues/269))
+
+### 🚀 New Features
+
+* let each module own its ServiceMonitor default ([#269](https://github.com/gersonrs/modern-gitops-stack/issues/269)) ([74f04c3](https://github.com/gersonrs/modern-gitops-stack/commit/74f04c3a750f14d9538622dbff08780fbb23ef15))
+
 ## [3.0.2](https://github.com/gersonrs/modern-gitops-stack/compare/v3.0.1...v3.0.2) (2026-11-23)
 
 
