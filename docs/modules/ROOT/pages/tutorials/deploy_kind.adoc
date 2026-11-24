@@ -22,7 +22,39 @@ Na sua máquina local, você precisa ter as seguintes ferramentas instaladas:
 
 === Balanceador de carga local
 
-https://metallb.universe.tf/[MetalLB] é usado como balanceador de carga para o cluster. Isso nos permite ter um cluster KinD de vários nós sem a necessidade de usar o Traefik em uma única réplica com uma configuração NodePort.
+https://metallb.universe.tf/[MetalLB] é usado como balanceador de carga para o cluster. Isso nos permite ter um cluster KinD de vários nós sem precisar de um balanceador de carga da nuvem.
+
+=== Exposição das aplicações (Istio)
+
+Todas as aplicações são expostas pelo *Istio Gateway* em modo ambient, e não mais por Ingress + Traefik. Cada módulo cria um `HTTPRoute` (Gateway API) apontando para o gateway `istio-gateway` no namespace `istio-ingress`, na seção `https`.
+
+Isso significa que a URL de uma aplicação segue o padrão `https://<app>.apps.<IP>.nip.io`. O certificado é emitido pelo `cert-manager` e o gateway o apresenta na terminação TLS.
+
+NOTE: O módulo `traefik` ainda existe no projeto, mas *não é mais usado* pela stack. Todo o tráfego passa pelo Istio.
+
+=== CRDs do Prometheus (crds_bootstrap)
+
+O `kube-prometheus-stack` instala os CRDs do Prometheus Operator (`ServiceMonitor`, `PodMonitor`, `PrometheusRule`, ...). Porém, módulos instalados *antes* dele também publicam `ServiceMonitor` — e falhariam se o CRD ainda não existisse.
+
+Para resolver isso, o módulo `crds_bootstrap` (variante do `kube-prometheus-stack`) roda logo após o `argocd_bootstrap` e instala apenas os CRDs, usando o chart oficial `prometheus-operator-crds`. O `kube-prometheus-stack` principal roda com `crds.enabled = false`, então o `crds_bootstrap` é o único dono desses objetos.
+
+Como consequência, *todo módulo pode habilitar seu `ServiceMonitor` desde o primeiro apply*, sem a necessidade de subir a stack em duas etapas.
+
+=== Monitoramento por módulo
+
+Cada módulo tem a variável `enable_service_monitor`, que hoje tem `default = true`. Isso significa que uma aplicação já nasce monitorada, com `ServiceMonitor` e dashboard no Grafana.
+
+Para excluir uma aplicação específica do monitoramento, basta passar a variável naquele módulo:
+
+[source,terraform]
+----
+module "minha-app" {
+  # ...
+  enable_service_monitor = false
+}
+----
+
+NOTE: Não existe mais uma variável global no `locals.tf`. O controle é por módulo, justamente para não afetar a stack inteira ao desligar uma aplicação.
 
 === Autenticação OIDC
 
@@ -94,7 +126,7 @@ A abordagem recomendada é implantar por grupos, limpando os resíduos do grupo 
 
 === 1. Plataforma (`main.tf`)
 
-Deixe apenas os módulos do `main.tf` habilitados e comente todos os módulos do `apps.tf`. Isso sobe cluster, MetalLB, Argo CD, Istio, cert-manager, Traefik, Keycloak, observabilidade e os serviços de dados compartilhados (PostgreSQL e MinIO).
+Deixe apenas os módulos do `main.tf` habilitados e comente todos os módulos do `apps.tf`. Isso sobe cluster, MetalLB, Argo CD, os CRDs do Prometheus, Istio, cert-manager, Keycloak, observabilidade e os serviços de dados compartilhados (PostgreSQL e MinIO).
 
 [source,bash]
 ----

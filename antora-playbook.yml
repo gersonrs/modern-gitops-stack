@@ -9,6 +9,7 @@ antora:
 
 urls:
   latest_version_segment: latest # Define each component's latest version as the latest in the URL
+
 content:
   tags: v*
   branches: ~
@@ -18,122 +19,215 @@ content:
       start_path: docs
       branches: []
       tags:
-        # Build all version tags
         - "v@({1..9})*({0..9}).+({0..9})*({0..9}).*"
-
-        # Exclude versions without proper folder structure or with generation errors
-        # - "!v{1..3}.{0..9}.{1..9}"
         - "!v1.0.1"
 
-    # Modules Repositories
-    - url: https://github.com/GersonRS/modern-gitops-stack-module-argocd.git
-      start_path: docs
-      branches: []
-      tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
-        - "!v2.0.0"
-    - url: https://github.com/GersonRS/modern-gitops-stack-module-cert-manager.git
-      start_path: docs
-      branches: []
-      tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
-        - "!v1.0.0"
-        # - "!v1.0.0-alpha.*"
-        # - "!v{3..4}.{0..1}.{0..2}"
+    # Cluster Modules
     - url: https://github.com/GersonRS/modern-gitops-stack-module-cluster-aks.git
       start_path: docs
       branches: []
       tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
         - "!v1.0.0"
     - url: https://github.com/GersonRS/modern-gitops-stack-module-cluster-eks.git
       start_path: docs
       branches: []
       tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
         - "!v1.0.0*"
     - url: https://github.com/GersonRS/modern-gitops-stack-module-cluster-kind.git
       start_path: docs
       branches: []
       tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
         - "!v1.0.0*"
         - "!v1.1.0*"
-        # - "!v{1..2}.{0..1}.{0..1}"
+
+    # GitOps, Networking & Security Modules
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-argocd.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+        - "!v2.0.0"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-cert-manager.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+        - "!v1.0.0"
     - url: https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git
       start_path: docs
       branches: []
       tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
         - "!v1.0.0"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-metallb.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+        - "!v1.0.0"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-metrics-server.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+        - "!v1.0.0"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-oidc-aws-cognito.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({1..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-reflector.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-traefik.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+        - "!v1.0.0"
+        - "!v1.1.0"
+        - "!v1.2.0"
+
+    # Observability & Storage Modules
     - url: https://github.com/GersonRS/modern-gitops-stack-module-kube-prometheus-stack.git
       start_path: docs
       branches: []
       tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
         - "!v1.0.0"
         - "!v1.1.0"
     - url: https://github.com/GersonRS/modern-gitops-stack-module-loki-stack.git
       start_path: docs
       branches: []
       tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
         - "!v1.0.0"
-    - url: https://github.com/GersonRS/modern-gitops-stack-module-metallb.git
-      start_path: docs
-      branches: []
-      tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
-        - "!v1.0.0"
-        # - "!v1.0.0-alpha.*"
-    - url: https://github.com/GersonRS/modern-gitops-stack-module-metrics-server.git
-      start_path: docs
-      branches: []
-      tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
-        - "!v1.0.0"
-    - url: https://github.com/GersonRS/modern-gitops-stack-module-minio.git
-      start_path: docs
-      branches: []
-      tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
-        # - "!v1.0.0-alpha.*"
-        - "!v1.0.0"
-        # - "!v1.1.1"
     - url: https://github.com/GersonRS/modern-gitops-stack-module-thanos.git
       start_path: docs
       branches: []
       tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
-        # - "!v1.0.0-alpha.*"
-    - url: https://github.com/GersonRS/modern-gitops-stack-module-traefik.git
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-minio.git
       start_path: docs
       branches: []
       tags:
-        - "v@({2..9})*({0..9}).+({0..9}).*"
-        # # Exclude versions without proper folder structure or with generation errors
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
         - "!v1.0.0"
-        - "!v1.1.0"
-        - "!v1.2.0"
-    - url: https://github.com/GersonRS/modern-gitops-stack-module-oidc-aws-cognito.git
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-mysql.git
       start_path: docs
       branches: []
       tags:
-        - "v@({1..9})*({0..9}).+({0..9}).*"
-        # Exclude versions without proper folder structure or with generation errors
-        # - "!v1.0.0-alpha.*"
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-qdrant.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+
+    # Streaming & Ingestion Modules
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-strimzi.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-kafka.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-cp-schema-registry.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-zookeeper.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-nifi.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/ingestion-data-stores.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({1..9})*({0..9}).+({0..9})*({0..9}).*"
+
+    # Data Analytics & MLOps Modules
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-airflow.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-hive-metastore.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-spark.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-spark-cluster.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({1..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-trino.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-pinot.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-ray.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-jupyterhub.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-mlflow.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-kubeflow.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-longhorn.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-ebs-csi-driver.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+    - url: https://github.com/GersonRS/modern-gitops-stack-module-efs-csi-driver.git
+      start_path: docs
+      branches: []
+      tags:
+        - "v@({2..9})*({0..9}).+({0..9})*({0..9}).*"
+
 ui:
   bundle:
     url: https://github.com/GersonRS/modern-gitops-stack-antora-ui/releases/download/main-latest/ui-bundle.zip
