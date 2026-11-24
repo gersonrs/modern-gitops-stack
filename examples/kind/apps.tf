@@ -6,16 +6,15 @@
 module "mlflow" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-mlflow.git?ref=v2.0.1"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  gateway_name           = module.istio.gateway_name
-  gateway_namespace      = module.istio.gateway_namespace
-  oidc                   = module.oidc.oidc
+  cluster_name      = local.cluster_name
+  base_domain       = local.base_domain
+  subdomain         = local.subdomain
+  cluster_issuer    = local.cluster_issuer
+  argocd_project    = local.cluster_name
+  app_autosync      = local.app_autosync
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
+  oidc              = module.oidc.oidc
   allowed_groups = [
     "modern-gitops-stack-admins",
     "modern-gitops-stack-data-scientists",
@@ -46,15 +45,14 @@ module "mlflow" {
 module "strimzi" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-strimzi.git?ref=v2.0.0"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  gateway_name           = module.istio.gateway_name
-  gateway_namespace      = module.istio.gateway_namespace
+  cluster_name      = local.cluster_name
+  base_domain       = local.base_domain
+  subdomain         = local.subdomain
+  cluster_issuer    = local.cluster_issuer
+  argocd_project    = local.cluster_name
+  app_autosync      = local.app_autosync
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
   dependency_ids = {
     argocd = module.argocd_bootstrap.id
   }
@@ -63,15 +61,14 @@ module "strimzi" {
 module "kafka" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kafka.git?ref=v3.0.6"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  gateway_name           = module.istio.gateway_name
-  gateway_namespace      = module.istio.gateway_namespace
+  cluster_name      = local.cluster_name
+  base_domain       = local.base_domain
+  subdomain         = local.subdomain
+  cluster_issuer    = local.cluster_issuer
+  argocd_project    = local.cluster_name
+  app_autosync      = local.app_autosync
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
   dependency_ids = {
     argocd  = module.argocd_bootstrap.id
     strimzi = module.strimzi.id
@@ -81,17 +78,16 @@ module "kafka" {
 module "cp-schema-registry" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-cp-schema-registry.git?ref=v2.0.1"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  kafka_broker_name      = module.kafka.broker_name
-  gateway_name           = module.istio.gateway_name
-  gateway_namespace      = module.istio.gateway_namespace
-  oidc                   = module.oidc.oidc
+  cluster_name      = local.cluster_name
+  base_domain       = local.base_domain
+  subdomain         = local.subdomain
+  cluster_issuer    = local.cluster_issuer
+  argocd_project    = local.cluster_name
+  app_autosync      = local.app_autosync
+  kafka_broker_name = module.kafka.broker_name
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
+  oidc              = module.oidc.oidc
   allowed_groups = [
     "modern-gitops-stack-admins",
     "modern-gitops-stack-data-engineers",
@@ -105,17 +101,16 @@ module "cp-schema-registry" {
 module "kafka-ui" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-kafka-ui.git?ref=v2.0.2"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  kafka_broker_name      = module.kafka.broker_name
-  gateway_name           = module.istio.gateway_name
-  gateway_namespace      = module.istio.gateway_namespace
-  oidc                   = module.oidc.oidc
+  cluster_name      = local.cluster_name
+  base_domain       = local.base_domain
+  subdomain         = local.subdomain
+  cluster_issuer    = local.cluster_issuer
+  argocd_project    = local.cluster_name
+  app_autosync      = local.app_autosync
+  kafka_broker_name = module.kafka.broker_name
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
+  oidc              = module.oidc.oidc
   allowed_groups = [
     "modern-gitops-stack-admins",
     "modern-gitops-stack-data-engineers",
@@ -130,13 +125,12 @@ module "kafka-ui" {
 module "zookeeper" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-zookeeper.git?ref=v3.0.1"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
   dependency_ids = {
     argocd = module.argocd_bootstrap.id
   }
@@ -145,13 +139,12 @@ module "zookeeper" {
 module "pinot" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-pinot.git?ref=v3.0.0"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
   storage = {
     bucket_name       = "pinot"
     endpoint          = module.minio.endpoint
@@ -170,14 +163,13 @@ module "pinot" {
 module "trino" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-trino.git?ref=v3.0.1"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  pinot_dns              = module.pinot.cluster_dns
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
+  pinot_dns      = module.pinot.cluster_dns
   storage = {
     bucket_name       = "trino"
     endpoint          = module.minio.endpoint
@@ -205,14 +197,13 @@ module "trino" {
 module "nifi" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-nifi.git?ref=v3.0.2"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  oidc                   = module.oidc.oidc
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
+  oidc           = module.oidc.oidc
   dependency_ids = {
     zookeeper = module.zookeeper.id
   }
@@ -224,13 +215,12 @@ module "nifi" {
 module "spark" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-spark.git?ref=v2.0.1"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
 
   storage = {
     access_key        = module.minio.minio_root_user_credentials.username
@@ -247,13 +237,12 @@ module "spark" {
 module "hive-metastore" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-hive-metastore.git?ref=v3.0.1"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
 
   storage = {
     bucket_name       = "warehouse"
@@ -283,13 +272,12 @@ module "hive-metastore" {
 module "kuberay" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-ray.git?ref=v2.0.0"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
 
   dependency_ids = {
     argocd       = module.argocd.id
@@ -301,13 +289,12 @@ module "kuberay" {
 module "qdrant" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-qdrant.git?ref=v3.0.1"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
 
   dependency_ids = {
     argocd       = module.argocd_bootstrap.id
@@ -321,17 +308,16 @@ module "qdrant" {
 module "airflow" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-airflow.git?ref=v2.0.4"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  gateway_name           = module.istio.gateway_name
-  gateway_namespace      = module.istio.gateway_namespace
-  oidc                   = module.oidc.oidc
-  fernetKey              = base64encode(resource.random_password.airflow_fernetKey.result)
+  cluster_name      = local.cluster_name
+  base_domain       = local.base_domain
+  subdomain         = local.subdomain
+  cluster_issuer    = local.cluster_issuer
+  argocd_project    = local.cluster_name
+  app_autosync      = local.app_autosync
+  gateway_name      = module.istio.gateway_name
+  gateway_namespace = module.istio.gateway_namespace
+  oidc              = module.oidc.oidc
+  fernetKey         = base64encode(resource.random_password.airflow_fernetKey.result)
   storage = {
     bucket_name       = local.minio_config.buckets.3.name
     endpoint          = module.minio.endpoint

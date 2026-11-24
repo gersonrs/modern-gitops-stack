@@ -15,7 +15,7 @@ module "metallb" {
 }
 
 module "argocd_bootstrap" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git//bootstrap?ref=v6.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git//bootstrap?ref=v7.0.0"
   argocd_projects = {
     "${local.cluster_name}" = {
       destination_cluster = "in-cluster"
@@ -57,7 +57,7 @@ module "argocd_bootstrap" {
 }
 
 module "metrics-server" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-metrics-server.git?ref=v3.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-metrics-server.git?ref=v4.0.0"
 
   argocd_project = local.cluster_name
 
@@ -66,7 +66,8 @@ module "metrics-server" {
   kubelet_insecure_tls = true
 
   dependency_ids = {
-    argocd = module.argocd_bootstrap.id
+    argocd         = module.argocd_bootstrap.id
+    crds_bootstrap = module.crds_bootstrap.id
   }
 }
 
@@ -90,8 +91,7 @@ module "cert-manager" {
 
   argocd_project = local.cluster_name
 
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  app_autosync = local.app_autosync
 
   dependency_ids = {
     argocd         = module.argocd_bootstrap.id
@@ -102,12 +102,11 @@ module "cert-manager" {
 module "istio" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-istio.git//kind?ref=v2.0.0"
 
-  cluster_name           = local.cluster_name
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  cluster_name   = local.cluster_name
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
   dependency_ids = {
     argocd         = module.argocd_bootstrap.id
     cert-manager   = module.cert-manager.id
@@ -116,14 +115,13 @@ module "istio" {
 }
 
 module "postgresql" {
-  source                 = "git::https://github.com/GersonRS/modern-gitops-stack-module-postgresql.git?ref=v4.0.3"
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  source         = "git::https://github.com/GersonRS/modern-gitops-stack-module-postgresql.git?ref=v4.0.3"
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
 
   dependency_ids = {
     argocd         = module.argocd_bootstrap.id
@@ -133,7 +131,7 @@ module "postgresql" {
 }
 
 module "keycloak" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git?ref=v3.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git?ref=v4.0.1"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -142,6 +140,9 @@ module "keycloak" {
   argocd_project = local.cluster_name
 
   app_autosync = local.app_autosync
+  theme_config = {
+    repository_branch = "v1.2.0"
+  }
   database = {
     host     = module.postgresql.cluster_dns
     username = module.postgresql.credentials.username
@@ -157,7 +158,7 @@ module "keycloak" {
 }
 
 module "oidc" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git//oidc_bootstrap?ref=v3.1.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-keycloak.git//oidc_bootstrap?ref=v4.0.1"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -175,15 +176,14 @@ module "oidc" {
 module "minio" {
   source = "git::https://github.com/GersonRS/modern-gitops-stack-module-minio.git?ref=v3.0.0"
 
-  cluster_name           = local.cluster_name
-  base_domain            = local.base_domain
-  subdomain              = local.subdomain
-  cluster_issuer         = local.cluster_issuer
-  argocd_project         = local.cluster_name
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
-  config_minio           = local.minio_config
-  oidc                   = module.oidc.oidc
+  cluster_name   = local.cluster_name
+  base_domain    = local.base_domain
+  subdomain      = local.subdomain
+  cluster_issuer = local.cluster_issuer
+  argocd_project = local.cluster_name
+  app_autosync   = local.app_autosync
+  config_minio   = local.minio_config
+  oidc           = module.oidc.oidc
   dependency_ids = {
     istio          = module.istio.id
     cert-manager   = module.cert-manager.id
@@ -199,8 +199,7 @@ module "loki-stack" {
 
   argocd_project = local.cluster_name
 
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  app_autosync = local.app_autosync
   logs_storage = {
     bucket_name = local.minio_config.buckets.0.name
     endpoint    = module.minio.endpoint
@@ -216,7 +215,7 @@ module "loki-stack" {
 }
 
 module "thanos" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-thanos.git//kind?ref=v4.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-thanos.git//kind?ref=v5.0.0"
 
   cluster_name   = local.cluster_name
   base_domain    = local.base_domain
@@ -224,8 +223,7 @@ module "thanos" {
   cluster_issuer = local.cluster_issuer
   argocd_project = local.cluster_name
 
-  app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
+  app_autosync = local.app_autosync
 
   metrics_storage = {
     bucket_name = local.minio_config.buckets.1.name
@@ -312,7 +310,6 @@ module "kiali" {
   cluster_issuer         = local.cluster_issuer
   argocd_project         = local.cluster_name
   app_autosync           = local.app_autosync
-  enable_service_monitor = local.enable_service_monitor
   grafana_admin_password = module.kube-prometheus-stack.grafana_admin_password
   oidc                   = module.oidc.oidc
 
@@ -326,7 +323,7 @@ module "kiali" {
 }
 
 module "argocd" {
-  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git?ref=v6.0.0"
+  source = "git::https://github.com/GersonRS/modern-gitops-stack-module-argocd.git?ref=v7.0.0"
 
   base_domain              = local.base_domain
   cluster_name             = local.cluster_name
