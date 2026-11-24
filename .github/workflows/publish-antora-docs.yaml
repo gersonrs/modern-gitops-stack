@@ -6,16 +6,20 @@ on:
       - main
     paths:
       - "version.txt" # Trigger a build when the version changes in order to take the version tag into account
+      - "antora-playbook.yml"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
 concurrency:
   group: github-pages
   cancel-in-progress: false
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,15 +36,19 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "18"
+          node-version: "22"
+
       - name: Install Antora with the Antora Lunr Extension
         run: npm i antora @antora/lunr-extension
+
       - name: Generate Site
         run: npx antora antora-playbook.yml
+
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4.0.0
         with:
           path: build/site
+
       - name: Deploy GitHub Pages site
         id: deployment
         uses: actions/deploy-pages@v4.0.5
