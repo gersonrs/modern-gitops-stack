@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.3](https://github.com/gersonrs/modern-gitops-stack/compare/v4.0.2...v4.0.3) (2026-11-25)
+
+
+### 📦 CI Improvements
+
+* upgrade antora docs workflow to node 22 ([#275](https://github.com/gersonrs/modern-gitops-stack/issues/275)) ([5eb8f56](https://github.com/gersonrs/modern-gitops-stack/commit/5eb8f5633db88fa6793ab4b83ac0b3ca9424efac))
+
 ## [4.0.2](https://github.com/gersonrs/modern-gitops-stack/compare/v4.0.1...v4.0.2) (2026-11-24)
 
 
